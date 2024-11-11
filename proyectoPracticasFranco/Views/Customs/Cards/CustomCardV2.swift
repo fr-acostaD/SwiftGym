@@ -34,7 +34,7 @@ class CustomCardV2: UIView {
     // MARK: - Initializers
     init(position: CGPoint, action: (() -> Void)? = nil) {
         self.action = action
-        let fixedFrame = CGRect(origin: position, size: CGSize(width: Utils.doResponsive(baseSize.width), height: Utils.doResponsive(baseSize.height)))
+        let fixedFrame = CGRect(origin: position, size: CGSize(width: UtilsFunc.doResponsive(baseSize.width), height: UtilsFunc.doResponsive(baseSize.height)))
         super.init(frame: fixedFrame)
         setupView()
     }
@@ -120,8 +120,8 @@ class CustomCardV2: UIView {
         super.layoutSubviews()
         
         // Self SetUp
-        self.frame.size = CGSize(width: Utils.doResponsive(baseSize.width), height: Utils.doResponsive(baseSize.height))
-        self.layer.cornerRadius = Utils.doResponsive(32)
+        self.frame.size = CGSize(width: UtilsFunc.doResponsive(baseSize.width), height: UtilsFunc.doResponsive(baseSize.height))
+        self.layer.cornerRadius = UtilsFunc.doResponsive(32)
         
         // Frames
         frameSetUp()
@@ -134,37 +134,37 @@ class CustomCardV2: UIView {
     }
 
     private func updateFonts() {
-        headerText.font = UIFont.systemFont(ofSize: Utils.responsiveText(16), weight: .black)
-        movementText.font = UIFont.systemFont(ofSize: Utils.responsiveText(11), weight: .bold)
-        percentageText.font = UIFont.systemFont(ofSize: Utils.responsiveText(11), weight: .bold)
-        typeText.font = UIFont.systemFont(ofSize: Utils.responsiveText(11), weight: .bold)
+        headerText.font = UIFont.systemFont(ofSize: UtilsFunc.responsiveText(16), weight: .black)
+        movementText.font = UIFont.systemFont(ofSize: UtilsFunc.responsiveText(11), weight: .bold)
+        percentageText.font = UIFont.systemFont(ofSize: UtilsFunc.responsiveText(11), weight: .bold)
+        typeText.font = UIFont.systemFont(ofSize: UtilsFunc.responsiveText(11), weight: .bold)
     }
     
     private func borderSetUp() {
-        excersiseImage.layer.cornerRadius = Utils.doResponsive(20)
-        typeView.layer.cornerRadius = Utils.doResponsive(12)
-        barView.layer.cornerRadius = Utils.doResponsive(4.5)
-        barViewContent.layer.cornerRadius = Utils.doResponsive(4.5)
+        excersiseImage.layer.cornerRadius = UtilsFunc.doResponsive(20)
+        typeView.layer.cornerRadius = UtilsFunc.doResponsive(12)
+        barView.layer.cornerRadius = UtilsFunc.doResponsive(4.5)
+        barViewContent.layer.cornerRadius = UtilsFunc.doResponsive(4.5)
     }
 
     private func frameSetUp() {
         // Block
-        excersiseImage.frame = Utils.responsiveCGRect(width: 79, height: 82, x: 11, y: 13)
-        typeView.frame = Utils.responsiveCGRect(width: 46, height: 27, x: 236, y: 13)
-        barView.frame = Utils.responsiveCGRect(width: 227, height: 9, x: 105, y: 50)
-        barViewContent.frame = Utils.responsiveCGRect(width: 180, height: 9, x: 105, y: 50)
+        excersiseImage.frame = UtilsFunc.responsiveCGRect(width: 79, height: 82, x: 11, y: 13)
+        typeView.frame = UtilsFunc.responsiveCGRect(width: 46, height: 27, x: 236, y: 13)
+        barView.frame = UtilsFunc.responsiveCGRect(width: 227, height: 9, x: 105, y: 50)
+        barViewContent.frame = UtilsFunc.responsiveCGRect(width: 180, height: 9, x: 105, y: 50)
 
         // Icons
-        checkIcon.frame = Utils.responsiveCGRect(width: 15, height: 15, x: 105, y: 75)
-        percentageIcon.frame = Utils.responsiveCGRect(width: 15, height: 15, x: 220, y: 75)
+        checkIcon.frame = UtilsFunc.responsiveCGRect(width: 15, height: 15, x: 105, y: 75)
+        percentageIcon.frame = UtilsFunc.responsiveCGRect(width: 15, height: 15, x: 220, y: 75)
         
-        circle1.frame = Utils.responsiveCGRect(width: 5, height: 5, x: 204, y: 79)
+        circle1.frame = UtilsFunc.responsiveCGRect(width: 5, height: 5, x: 204, y: 79)
 
         // Texts
-        headerText.frame = Utils.responsiveCGRect(width: 121, height: 20, x: 105, y: 17)
-        movementText.frame = Utils.responsiveCGRect(width: 77, height: 13, x: 120, y: 75)
-        percentageText.frame = Utils.responsiveCGRect(width: 31, height: 13, x: 238, y: 75)
-        typeText.frame.size = CGSize(width: Utils.doResponsive(28), height: Utils.doResponsive(13))
+        headerText.frame = UtilsFunc.responsiveCGRect(width: 121, height: 20, x: 105, y: 17)
+        movementText.frame = UtilsFunc.responsiveCGRect(width: 77, height: 13, x: 120, y: 75)
+        percentageText.frame = UtilsFunc.responsiveCGRect(width: 31, height: 13, x: 238, y: 75)
+        typeText.frame.size = CGSize(width: UtilsFunc.doResponsive(28), height: UtilsFunc.doResponsive(13))
         typeText.center = CGPoint(x: typeView.bounds.midX, y: typeView.bounds.midY)
 }
 

@@ -42,7 +42,7 @@ class CustomCardV0: UIView {
     init(position: CGPoint, cardV0: CardV0 = CardV0() ,action: (() -> Void)? = nil) {
         self.action = action
         self.cardV0 = cardV0
-        let fixedFrame = CGRect(origin: position, size: CGSize(width: Utils.doResponsive(baseSize.width), height: Utils.doResponsive(baseSize.height)))
+        let fixedFrame = CGRect(origin: position, size: CGSize(width: UtilsFunc.doResponsive(baseSize.width), height: UtilsFunc.doResponsive(baseSize.height)))
         super.init(frame: fixedFrame)
         setupView()
     }
@@ -159,8 +159,8 @@ class CustomCardV0: UIView {
         super.layoutSubviews()
         
         // Self SetUp
-        self.frame.size = CGSize(width: Utils.doResponsive(baseSize.width), height: Utils.doResponsive(baseSize.height))
-        self.layer.cornerRadius = Utils.doResponsive(20)
+        self.frame.size = CGSize(width: UtilsFunc.doResponsive(baseSize.width), height: UtilsFunc.doResponsive(baseSize.height))
+        self.layer.cornerRadius = UtilsFunc.doResponsive(20)
         
         // Frames
         frameSetUp()
@@ -173,40 +173,40 @@ class CustomCardV0: UIView {
     }
 
     private func updateFonts() {
-        headerText.font = UIFont.systemFont(ofSize: Utils.responsiveText(20), weight: .black)
-        timeText.font = UIFont.systemFont(ofSize: Utils.responsiveText(11), weight: .bold)
-        calTexts.font = UIFont.systemFont(ofSize: Utils.responsiveText(11), weight: .bold)
-        typeText.font = UIFont.systemFont(ofSize: Utils.responsiveText(11), weight: .bold)
-        levelText.font = UIFont.systemFont(ofSize: Utils.responsiveText(10), weight: .bold)
+        headerText.font = UIFont.systemFont(ofSize: UtilsFunc.responsiveText(20), weight: .black)
+        timeText.font = UIFont.systemFont(ofSize: UtilsFunc.responsiveText(11), weight: .bold)
+        calTexts.font = UIFont.systemFont(ofSize: UtilsFunc.responsiveText(11), weight: .bold)
+        typeText.font = UIFont.systemFont(ofSize: UtilsFunc.responsiveText(11), weight: .bold)
+        levelText.font = UIFont.systemFont(ofSize: UtilsFunc.responsiveText(10), weight: .bold)
     }
     
     private func borderSetUp() {
-        continueView.layer.cornerRadius = Utils.doResponsive(20)
-        continueView.layer.borderWidth = Utils.doResponsive(4)
-        levelType.layer.cornerRadius = Utils.doResponsive(7)
+        continueView.layer.cornerRadius = UtilsFunc.doResponsive(20)
+        continueView.layer.borderWidth = UtilsFunc.doResponsive(4)
+        levelType.layer.cornerRadius = UtilsFunc.doResponsive(7)
     }
 
     private func frameSetUp(){
         // Block
-        continueView.frame = Utils.responsiveCGRect(width: 53, height: 53, x: 277, y: 190)
-        levelType.frame = Utils.responsiveCGRect(width: 80, height: 25, x: 16, y: 18)
+        continueView.frame = UtilsFunc.responsiveCGRect(width: 53, height: 53, x: 277, y: 190)
+        levelType.frame = UtilsFunc.responsiveCGRect(width: 80, height: 25, x: 16, y: 18)
         
         // Icons
-        playIcon.frame = Utils.responsiveCGRect(width: 24, height: 24, x: 15, y: 15)
-        shareIcon.frame = Utils.responsiveCGRect(width: 27, height: 27, x: 264, y: 17)
-        likeIcon.frame = Utils.responsiveCGRect(width: 27, height: 27, x: 302, y: 17)
-        fireIcon.frame = Utils.responsiveCGRect(width: 15, height: 15, x: 93, y: 225)
-        timeIcon.frame = Utils.responsiveCGRect(width: 15, height: 15, x: 16, y: 225)
-        dummbleIcon.frame = Utils.responsiveCGRect(width: 15, height: 15, x: 178, y: 226)
+        playIcon.frame = UtilsFunc.responsiveCGRect(width: 24, height: 24, x: 15, y: 15)
+        shareIcon.frame = UtilsFunc.responsiveCGRect(width: 27, height: 27, x: 264, y: 17)
+        likeIcon.frame = UtilsFunc.responsiveCGRect(width: 27, height: 27, x: 302, y: 17)
+        fireIcon.frame = UtilsFunc.responsiveCGRect(width: 15, height: 15, x: 93, y: 225)
+        timeIcon.frame = UtilsFunc.responsiveCGRect(width: 15, height: 15, x: 16, y: 225)
+        dummbleIcon.frame = UtilsFunc.responsiveCGRect(width: 15, height: 15, x: 178, y: 226)
         
-        circle1.frame = Utils.responsiveCGRect(width: 5, height: 5, x: 80, y: 231)
-        circle2.frame = Utils.responsiveCGRect(width: 5, height: 5, x: 168, y: 231)
+        circle1.frame = UtilsFunc.responsiveCGRect(width: 5, height: 5, x: 80, y: 231)
+        circle2.frame = UtilsFunc.responsiveCGRect(width: 5, height: 5, x: 168, y: 231)
         // Texts
-        headerText.frame = Utils.responsiveCGRect(width: 185, height: 20, x: 16, y: 194)
-        timeText.frame = Utils.responsiveCGRect(width: 40, height: 15, x: 37, y: 225)
-        calTexts.frame = Utils.responsiveCGRect(width: 50, height: 18, x: 113, y: 225)
-        typeText.frame = Utils.responsiveCGRect(width: 70, height: 18, x: 195, y: 225)
-        levelText.frame.size = CGSize(width: Utils.doResponsive(70), height: Utils.doResponsive(15))
+        headerText.frame = UtilsFunc.responsiveCGRect(width: 185, height: 20, x: 16, y: 194)
+        timeText.frame = UtilsFunc.responsiveCGRect(width: 40, height: 15, x: 37, y: 225)
+        calTexts.frame = UtilsFunc.responsiveCGRect(width: 50, height: 18, x: 113, y: 225)
+        typeText.frame = UtilsFunc.responsiveCGRect(width: 70, height: 18, x: 195, y: 225)
+        levelText.frame.size = CGSize(width: UtilsFunc.doResponsive(70), height: UtilsFunc.doResponsive(15))
         levelText.center = CGPoint(x: levelType.bounds.midX, y: levelType.bounds.midY)
     }
     

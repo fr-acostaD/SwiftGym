@@ -31,6 +31,6 @@ class CircleView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         // Ajusta el corner radius en layoutSubviews para asegurarte de que se mantenga
-        self.layer.cornerRadius = Utils.doResponsive(self.bounds.size.width / 2)
+        self.layer.cornerRadius = UtilsFunc.doResponsive(self.bounds.size.width / 2)
     }
 }

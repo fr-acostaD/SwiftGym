@@ -28,7 +28,7 @@ class CustomContainerView: UIView {
     
     init(position: CGPoint, action: (() -> Void)? = nil) {
         // Fijamos el tamaño y permitimos que la posición x e y se defina desde el controlador
-        let fixedFrame = CGRect(origin: position, size: CGSize(width: Utils.doResponsive(size.width), height: Utils.doResponsive(size.height)))
+        let fixedFrame = CGRect(origin: position, size: CGSize(width: UtilsFunc.doResponsive(size.width), height: UtilsFunc.doResponsive(size.height)))
         super.init(frame: fixedFrame)
         self.action = action
         setupView()
@@ -43,10 +43,10 @@ class CustomContainerView: UIView {
 
     private func setupView() {
         self.backgroundColor = .systemPink
-        self.layer.cornerRadius = Utils.doResponsive(20)
+        self.layer.cornerRadius = UtilsFunc.doResponsive(20)
         
         // Configuración de la imagen de fondo
-        backgroundImageView.frame = Utils.responsiveCGRect(width: size.width, height: size.height, x: 0, y: 0)
+        backgroundImageView.frame = UtilsFunc.responsiveCGRect(width: size.width, height: size.height, x: 0, y: 0)
         backgroundImageView.contentMode = .scaleAspectFill
         backgroundImageView.clipsToBounds = true
         backgroundImageView.layer.cornerRadius = 12
@@ -54,7 +54,7 @@ class CustomContainerView: UIView {
         addSubview(backgroundImageView)
         
         // Configuración del ícono
-        iconImageView.frame = Utils.responsiveCGRect(width: 30, height: 30, x: 10, y: 10) // Posición y tamaño fijos
+        iconImageView.frame = UtilsFunc.responsiveCGRect(width: 30, height: 30, x: 10, y: 10) // Posición y tamaño fijos
         iconImageView.contentMode = .scaleAspectFit
         iconImageView.tintColor = .white
         iconImageView.isUserInteractionEnabled = true // Necesario para detectar gestos
@@ -65,7 +65,7 @@ class CustomContainerView: UIView {
         iconImageView.addGestureRecognizer(tapGesture)
         
         // Configuración del texto
-        titleLabel.frame = Utils.responsiveCGRect(width: size.width, height: 20, x: 0, y: (size.height / 2) - 10)
+        titleLabel.frame = UtilsFunc.responsiveCGRect(width: size.width, height: 20, x: 0, y: (size.height / 2) - 10)
         // Centrado horizontalmente
         titleLabel.textAlignment = .center
         titleLabel.textColor = .white
@@ -74,7 +74,7 @@ class CustomContainerView: UIView {
         addSubview(titleLabel)
         
         // Configuración del indicador de carga
-        loadingIndicator.center = CGPoint(x: Utils.doResponsive(size.width / 2), y: Utils.doResponsive(size.height / 2))
+        loadingIndicator.center = CGPoint(x: UtilsFunc.doResponsive(size.width / 2), y: UtilsFunc.doResponsive(size.height / 2))
         loadingIndicator.hidesWhenStopped = true
         addSubview(loadingIndicator)
     }

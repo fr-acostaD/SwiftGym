@@ -174,59 +174,59 @@ class MainViewController: UIViewController {
                                 x: 0,
                                 y: 0,
                                 width: view.bounds.width,
-                                height: Utils.doResponsive(1538)
+                                height: UtilsFunc.doResponsive(1538)
         )
         
         // Fit the Scroll Size to ContentView
         scrollView.contentSize = CGSize(width: contentView.bounds.width, height: contentView.bounds.height)
         
         // Cards Responsives
-        containerViewV0.frame.origin = CGPoint(x: Utils.doResponsive(16), y: Utils.doResponsive(215))
-        cardListView.frame = Utils.responsiveCGRect(width: UIScreen.main.bounds.width, height: 250, x: 16, y: 545)
+        containerViewV0.frame.origin = CGPoint(x: UtilsFunc.doResponsive(16), y: UtilsFunc.doResponsive(215))
+        cardListView.frame = UtilsFunc.responsiveCGRect(width: UIScreen.main.bounds.width, height: 250, x: 16, y: 545)
 //
 //            .origin = CGPoint(x: Utils.doResponsive(0), y: Utils.doResponsive(545))
 //        cardListView.frame.size = CGSize(width: UIScreen.main.bounds.width, height: 234)
         
-        containerViewV2.frame.origin = CGPoint(x: Utils.doResponsive(16), y: Utils.doResponsive(862))
+        containerViewV2.frame.origin = CGPoint(x: UtilsFunc.doResponsive(16), y: UtilsFunc.doResponsive(862))
         
         // Icons
-        porfilePicture.frame = Utils.responsiveCGRect(width: 57, height: 57, x: 18, y: 59)
-        searchButtonView.frame = Utils.responsiveCGRect(width: 57, height: 57, x: 302, y: 59)
-        searchIcon.frame.size = CGSize(width: Utils.doResponsive(70), height: Utils.doResponsive(15))
+        porfilePicture.frame = UtilsFunc.responsiveCGRect(width: 57, height: 57, x: 18, y: 59)
+        searchButtonView.frame = UtilsFunc.responsiveCGRect(width: 57, height: 57, x: 302, y: 59)
+        searchIcon.frame.size = CGSize(width: UtilsFunc.doResponsive(70), height: UtilsFunc.doResponsive(15))
         searchIcon.center = CGPoint(x: searchButtonView.bounds.midX, y: searchButtonView.bounds.midY)
         
         // Texts
-        greetingsText1.frame = Utils.responsiveCGRect(width: 141, height: 18, x: 80, y: 62)
-        greetingsText2.frame = Utils.responsiveCGRect(width: 135, height: 18, x: 85, y: 87)
+        greetingsText1.frame = UtilsFunc.responsiveCGRect(width: 141, height: 18, x: 80, y: 62)
+        greetingsText2.frame = UtilsFunc.responsiveCGRect(width: 135, height: 18, x: 85, y: 87)
         
-        titleText1.frame = Utils.responsiveCGRect(width: 141, height: 18, x: 8, y: 182)
-        titleText2.frame = Utils.responsiveCGRect(width: 141, height: 18, x: 8, y: 513)
-        titleText3.frame = Utils.responsiveCGRect(width: 141, height: 18, x: 8, y: 837)
-        titleText4_1.frame = Utils.responsiveCGRect(width: 130, height: 18, x: 267, y: 182)
-        titleText4_2.frame = Utils.responsiveCGRect(width: 130, height: 18, x: 267, y: 513)
-        titleText4_3.frame = Utils.responsiveCGRect(width: 130, height: 18, x: 267, y: 837)
+        titleText1.frame = UtilsFunc.responsiveCGRect(width: 141, height: 18, x: 8, y: 182)
+        titleText2.frame = UtilsFunc.responsiveCGRect(width: 141, height: 18, x: 8, y: 513)
+        titleText3.frame = UtilsFunc.responsiveCGRect(width: 141, height: 18, x: 8, y: 837)
+        titleText4_1.frame = UtilsFunc.responsiveCGRect(width: 130, height: 18, x: 267, y: 182)
+        titleText4_2.frame = UtilsFunc.responsiveCGRect(width: 130, height: 18, x: 267, y: 513)
+        titleText4_3.frame = UtilsFunc.responsiveCGRect(width: 130, height: 18, x: 267, y: 837)
     }
     
     private func borderSetUp() {
-        searchButtonView.layer.borderWidth = Utils.doResponsive(1)
-        searchButtonView.layer.cornerRadius = Utils.doResponsive(20)
-        porfilePicture.layer.cornerRadius = Utils.doResponsive(porfilePicture.frame.size.width / 2.0)
+        searchButtonView.layer.borderWidth = UtilsFunc.doResponsive(1)
+        searchButtonView.layer.cornerRadius = UtilsFunc.doResponsive(20)
+        porfilePicture.layer.cornerRadius = UtilsFunc.doResponsive(porfilePicture.frame.size.width / 2.0)
 
     }
     
     private func updateFonts() {
-        greetingsText1.font = UIFont.systemFont(ofSize: Utils.responsiveText(14), weight: .bold)
-        greetingsText2.font = UIFont.systemFont(ofSize: Utils.responsiveText(20), weight: .bold)
-        titleText1.font = UIFont.systemFont(ofSize: Utils.responsiveText(16), weight: .bold)
-        titleText2.font = UIFont.systemFont(ofSize: Utils.responsiveText(16), weight: .bold)
-        titleText3.font = UIFont.systemFont(ofSize: Utils.responsiveText(16), weight: .bold)
+        greetingsText1.font = UIFont.systemFont(ofSize: UtilsFunc.responsiveText(14), weight: .bold)
+        greetingsText2.font = UIFont.systemFont(ofSize: UtilsFunc.responsiveText(20), weight: .bold)
+        titleText1.font = UIFont.systemFont(ofSize: UtilsFunc.responsiveText(16), weight: .bold)
+        titleText2.font = UIFont.systemFont(ofSize: UtilsFunc.responsiveText(16), weight: .bold)
+        titleText3.font = UIFont.systemFont(ofSize: UtilsFunc.responsiveText(16), weight: .bold)
         titleText4FotnConfig(titleText4: titleText4_1)
         titleText4FotnConfig(titleText4: titleText4_2)
         titleText4FotnConfig(titleText4: titleText4_3)
     }
     
     private func titleText4FotnConfig(titleText4: UILabel) -> Void{
-        titleText4.font = UIFont.systemFont(ofSize: Utils.responsiveText(14), weight: .bold)
+        titleText4.font = UIFont.systemFont(ofSize: UtilsFunc.responsiveText(14), weight: .bold)
     }
     
     

@@ -48,19 +48,19 @@ class HorizontalCardViewController: UICollectionView, UICollectionViewDataSource
         
         // Obtener el ancho de la pantalla y ajustarlo con márgenes
           
-        return CGSize(width: Utils.doResponsive(CustomCardV1.baseSize.width), height: Utils.doResponsive(CustomCardV1.baseSize.height))
+        return CGSize(width: UtilsFunc.doResponsive(CustomCardV1.baseSize.width), height: UtilsFunc.doResponsive(CustomCardV1.baseSize.height))
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        layout.minimumLineSpacing = Utils.doResponsive(16) // Espacio entre las tarjetas
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: Utils.doResponsive(16))
+        layout.minimumLineSpacing = UtilsFunc.doResponsive(16) // Espacio entre las tarjetas
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: UtilsFunc.doResponsive(16))
         
         
         // Ajustar el contentSize para asegurar que hay espacio suficiente
         let widthCard = CustomCardV1.baseSize.width
-        self.contentSize = CGSize(width: Utils.doResponsive(7 * ((widthCard * 1.5075) + 16) ), height: self.frame.height)
+        self.contentSize = CGSize(width: UtilsFunc.doResponsive(7 * ((widthCard * 1.5075) + 16) ), height: self.frame.height)
     }
 }
 
@@ -110,7 +110,7 @@ class CardCollectionViewCell: UICollectionViewCell {
     // Hacer que la celda se ajuste al tamaño correcto cuando el layout cambia
     override func layoutSubviews() {
         super.layoutSubviews()
-        customCard.frame = Utils.responsiveCGRect(width: self.frame.width, height: self.frame.height, x: 0, y: 0)    }
+        customCard.frame = UtilsFunc.responsiveCGRect(width: self.frame.width, height: self.frame.height, x: 0, y: 0)    }
 }
 
 class CardCell: UICollectionViewCell {

@@ -1,11 +1,38 @@
+//
+//  Endpoint.swift
+//  proyectoPracticasFranco
+//
+//  Created by Franco Ramiro Acosta Diaz on 11/11/24.
+//
+
+import Foundation
+
+
+
+//let baseURL = Constants.API.gptBaseURL
+//
+//let endpoint = Endpoint(
+//    baseURL: baseURL.url,
+//    path: GptBaseURL.paths.posts.rawValue,
+//    queryItems: [
+//        QueryParameters.pagination(page: 1, limit: 20),
+//        QueryParameters.search(query: "swift"),
+//        QueryParameters.filters(category: "books", sortBy: "price"),
+//                 ],
+//    httpMethod: .get
+//)
+
+
+
+
 struct Endpoint {
     let baseURL: String
     let path: String
     let queryItems: [QueryParameters]
-    let httpMethod: HTTP.Method
+    let httpMethod: Constants.HTTP.Method
     let body: Data?
     
-    init(baseURL: String, path: String, queryItems: [QueryParameters] = [], httpMethod: HTTP.Method, body: Data? = nil) {
+    init(baseURL: String, path: String, queryItems: [QueryParameters] = [], httpMethod: Constants.HTTP.Method, body: Data? = nil) {
         self.baseURL = baseURL
         self.path = path
         self.queryItems = queryItems
@@ -27,7 +54,6 @@ struct Endpoint {
         var request = URLRequest(url: url)
         request.httpMethod = httpMethod.rawValue
         request.httpBody = body
-        request.addValues(for: self)
         return request
     }
 }
