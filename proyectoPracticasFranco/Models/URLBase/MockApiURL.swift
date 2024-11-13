@@ -15,7 +15,7 @@
 
 
 
-struct MackApiURL: BaseURL {
+struct MockApiURL: BaseURL {
     let url: String
     let headers: [String : String] =
     [
