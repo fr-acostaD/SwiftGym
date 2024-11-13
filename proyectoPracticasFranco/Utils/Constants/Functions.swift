@@ -18,11 +18,12 @@ enum UtilsFunc {
         let screenWidth = UIScreen.main.bounds.width
         return (size * screenWidth) / Constants.sizeWidth
     }
+
     static  func responsiveText(_ size: Double) -> Double {
         let screenWidth = UIScreen.main.bounds.width
         return (screenWidth / Constants.sizeWidth) * size
     }
-    
+
     static  func responsiveCGRect(width: Double, height: Double, x: Double, y: Double, _ ratioType: Bool = true) -> CGRect {
         let screenWidth = UIScreen.main.bounds.width
         let screenHeight = UIScreen.main.bounds.height
@@ -33,5 +34,26 @@ enum UtilsFunc {
         return CGRect(x: x * ratio, y: y * ratio, width: width * ratio, height: height * ratio)
     }
     
-    // Otras utilidades responsivas pueden ir aquí
+    static  func fetchCardData<T: Codable>(endPoint: Endpoint, completion: @escaping (Result<T, NetworkError>) -> Void) {
+        // Esto puede dar fallo por nulabilidad hay que mirarlo bien
+        NetworkManager.shared.get(url: endPoint.request!, completion: completion)
+    }
+
+    static  func loadImage(from url: URL) -> Data?{
+        var imageFromData: Data?
+        let request = URLRequest(url: url)
+
+        NetworkManager.shared.get(url: request) { (result: Result<Data, NetworkError>) in
+            switch result {
+            case .success(let imageData):
+                DispatchQueue.main.async {
+                    imageFromData = imageData
+                }
+            case .failure(_):
+                imageFromData = nil
+            }
+        }
+        return imageFromData
+    }
+
 }

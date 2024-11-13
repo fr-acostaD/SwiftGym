@@ -18,6 +18,8 @@ class CustomCardV1: UIView {
     static let baseSize = CGSize(width: 264, height: 234)
 
     // MARK: - UI Components
+    private let backgroundImage = UIImageView()
+    
     private let fireIcon = UIImageView()
     private let timeIcon = UIImageView()
     private let arrowIcon = UIImageView()
@@ -57,6 +59,20 @@ class CustomCardV1: UIView {
         // Texts
         configureHeaderText()
         configureTextLabels()
+        // APISetUp
+//        UtilsFunc.fetchCardData(endPoint: EndPoints.endpointCardV1) {
+//            (result: Result<CardV1, NetworkError>) in
+//            
+//            switch result {
+//            case .success(let cardData):
+//                // Actualizar UI con los datos
+//                DispatchQueue.main.async {
+        self.updateCardView(with: cardV1)
+//                }
+//            case .failure(let error):
+//                print("Error: \(error)")
+//            }
+//        }
         // Add SubViews
         addLayouts()
     }
@@ -71,6 +87,9 @@ class CustomCardV1: UIView {
     }
 
     private func configureIcons() {
+        backgroundImage.contentMode = .scaleToFill
+        backgroundImage.translatesAutoresizingMaskIntoConstraints = false
+        
         arrowIcon.contentMode = .scaleAspectFit
         arrowIcon.tintColor = .black
         arrowIcon.isUserInteractionEnabled = true
@@ -86,25 +105,41 @@ class CustomCardV1: UIView {
         fireIcon.tintColor = .systemOrange
         fireIcon.isUserInteractionEnabled = true
         fireIcon.image = UIImage(systemName: "flame.fill")
-}
+    }
+
     private func configureHeaderText() {
         headerText.textAlignment = .center
         headerText.textColor = .black
-        headerText.text = cardV1.header ?? "Total Body Circuit"
+//        headerText.text = cardV1.header ?? "Total Body Circuit"
     }
 
     private func configureTextLabels() {
         timeText.textAlignment = .center
         timeText.textColor = .black
-        timeText.text = cardV1.mint ?? "35min"
+//        timeText.text = cardV1.mint ?? "35min"
 
         calTexts.textAlignment = .center
         calTexts.textColor = .black
-        calTexts.text = cardV1.cal ?? "205Kcal"
+//        calTexts.text = cardV1.cal ?? "205Kcal"
 
         typeText.textAlignment = .center
         typeText.textColor = .white
-        typeText.text = cardV1.type ?? "Upper Body"
+//        typeText.text = cardV1.type ?? "Upper Body"
+    }
+    
+    private func updateCardView(with cardData: CardV1) {
+        // Actualizar textos
+        headerText.text = cardData.header ?? "Default Header"
+        timeText.text = cardData.mint ?? "0min"
+        calTexts.text = cardData.cal ?? "0 Kcal"
+        typeText.text = cardData.type ?? "Type"
+
+        // Cargar imagen de fondo
+        if cardData.imageURL != nil{
+            if let imageData = UtilsFunc.loadImage(from: URL(string: cardData.imageURL!)!) {
+                self.backgroundImage.image = UIImage(data: imageData)
+            }
+        }
     }
     
     // MARK: - Layout
@@ -138,6 +173,7 @@ class CustomCardV1: UIView {
     }
 
     private func frameSetUp() {
+        backgroundImage.frame = UtilsFunc.responsiveCGRect(width: self.frame.width, height: self.frame.height, x: 0, y: 0)
         // Block
         continueView.frame = UtilsFunc.responsiveCGRect(width: 50, height: 49, x: 195, y: 172)
         typeView.frame = UtilsFunc.responsiveCGRect(width: 80, height: 25, x: 16, y: 18)
@@ -160,6 +196,8 @@ class CustomCardV1: UIView {
 
     private func addLayouts()
     {
+        self.addSubview(backgroundImage)
+        
         // ContinueView
         self.addSubview(continueView)
         continueView.addSubview(arrowIcon)

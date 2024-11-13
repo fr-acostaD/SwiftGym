@@ -18,6 +18,8 @@ class CustomCardV0: UIView {
     private let baseSize = CGSize(width: 343, height: 258)
     
     // MARK: - UI Components
+    private let backgroundImage = UIImageView()
+
     private let fireIcon = UIImageView()
     private let timeIcon = UIImageView()
     private let dummbleIcon = UIImageView()
@@ -64,7 +66,20 @@ class CustomCardV0: UIView {
         // Texts
         configureHeaderText()
         configureTextLabels()
+        //API SetUp
+                UtilsFunc.fetchCardData(endPoint: EndPoints.endpointCardV1) {
+                    (result: Result<CardV0, NetworkError>) in
         
+                    switch result {
+                    case .success(let cardData):
+                        // Actualizar UI con los datos
+                        DispatchQueue.main.async {
+                            self.updateCardView(with: cardData)
+                        }
+                    case .failure(let error):
+                        print("Error: \(error)")
+                    }
+                }
         // Add SubViews
         addLayouts()
     }
@@ -74,6 +89,10 @@ class CustomCardV0: UIView {
 //        continueView.layer.borderWidth = 0    
         continueView.layer.borderColor = UIColor.red.cgColor
         continueView.backgroundColor = .orange
+        
+        backgroundImage.contentMode = .scaleToFill
+        backgroundImage.translatesAutoresizingMaskIntoConstraints = false
+
     }
     
     private func configureLevelType() {
@@ -117,29 +136,29 @@ class CustomCardV0: UIView {
         headerText.textAlignment = .center
         headerText.textColor = .white
 //        headerText.font = UIFont.systemFont(ofSize: 0, weight: .bold)    
-        headerText.text = cardV0.header ?? "Total Body Circuit"
+//        headerText.text = cardV0.header ?? "Total Body Circuit"
     }
 
     private func configureTextLabels() {
         timeText.textAlignment = .center
         timeText.textColor = .lightGray
 //        timeText.font = UIFont.systemFont(ofSize: 0, weight: .bold)    
-        timeText.text = cardV0.mint ?? "35min"
+//        timeText.text = cardV0.mint ?? "35min"
 
         calTexts.textAlignment = .center
         calTexts.textColor = .lightGray
 //        calTexts.font = UIFont.systemFont(ofSize: 0, weight: .bold)    
-        calTexts.text = cardV0.cal ?? "205Kcal"
+//        calTexts.text = cardV0.cal ?? "205Kcal"
 
         typeText.textAlignment = .center
         typeText.textColor = .lightGray
 //        typeText.font = UIFont.systemFont(ofSize: 0, weight: .bold)    
-        typeText.text = cardV0.type ?? "Upper Body"
+//        typeText.text = cardV0.type ?? "Upper Body"
 
         levelText.textAlignment = .center
         levelText.textColor = .white
 //        levelText.font = UIFont.systemFont(ofSize: 0, weight: .bold)    
-        levelText.text = cardV0.level ?? "Intermediate"  
+//        levelText.text = cardV0.level ?? "Intermediate"
     }
 
     private func configureShareAndLikeIcons() {
@@ -154,6 +173,21 @@ class CustomCardV0: UIView {
         likeIcon.image = UIImage(systemName: "heart.fill")
     }
 
+    private func updateCardView(with cardData: CardV0) {
+        // Actualizar textos
+        typeText.text = cardData.type ?? "Upper Body"
+        calTexts.text = cardData.cal ?? "205Kcal"
+        timeText.text = cardData.mint ?? "35min"
+        levelText.text = cardData.level ?? "Intermediate"
+        headerText.text = cardData.header ?? "Total Body Circuit"
+
+        // Cargar imagen de fondo
+        if cardData.imageURL != nil{
+            if let imageData = UtilsFunc.loadImage(from: URL(string: cardData.imageURL!)!) {
+                self.backgroundImage.image = UIImage(data: imageData)
+            }
+        }
+    }
     // MARK: - Layout
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -173,6 +207,9 @@ class CustomCardV0: UIView {
     }
 
     private func updateFonts() {
+        backgroundImage.frame = UtilsFunc.responsiveCGRect(width: self.frame.width, height: self.frame.height, x: 0, y: 0)
+
+
         headerText.font = UIFont.systemFont(ofSize: UtilsFunc.responsiveText(20), weight: .black)
         timeText.font = UIFont.systemFont(ofSize: UtilsFunc.responsiveText(11), weight: .bold)
         calTexts.font = UIFont.systemFont(ofSize: UtilsFunc.responsiveText(11), weight: .bold)
@@ -212,6 +249,9 @@ class CustomCardV0: UIView {
     
     private func addLayouts()
     {
+        self.addSubview(backgroundImage)
+
+        
         // ContinueView
         self.addSubview(continueView)
         continueView.addSubview(playIcon)

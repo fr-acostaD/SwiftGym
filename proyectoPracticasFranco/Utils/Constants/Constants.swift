@@ -17,6 +17,7 @@ struct Constants {
     
     struct API {
         static let gptBaseURL = GptBaseURL("api.openai.com/")
+        static let beeceptorURL = BeeceptorURL("gymswift.free.beeceptor.com")
 //        static let stagingBaseURL = "api.staging.com"
 //        static let devBaseURL = "api.dev.com"
         
@@ -27,12 +28,6 @@ struct Constants {
         static let https = "https"
         static let http = "http"
     }
-    
-    struct APIPaths {
-        
-        
-
-    }
 
     enum HTTP {
         
@@ -41,17 +36,6 @@ struct Constants {
             case post   = "POST"
             case delete = "DELETE"
             case put    = "PUT"
-        }
-        
-        enum Headers {
-            
-            enum Key: String {
-                case contentType = "Content-Type"
-            }
-            
-            enum Value: String {
-                case applicationJson = "application/json"
-            }
         }
     }
     

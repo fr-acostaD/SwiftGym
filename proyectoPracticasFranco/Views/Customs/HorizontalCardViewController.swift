@@ -112,31 +112,3 @@ class CardCollectionViewCell: UICollectionViewCell {
         super.layoutSubviews()
         customCard.frame = UtilsFunc.responsiveCGRect(width: self.frame.width, height: self.frame.height, x: 0, y: 0)    }
 }
-
-class CardCell: UICollectionViewCell {
-    private let label = UILabel()
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        contentView.backgroundColor = .systemBlue
-        contentView.layer.cornerRadius = 10
-        contentView.layer.masksToBounds = true
-        
-        label.textAlignment = .center
-        label.textColor = .black
-        contentView.addSubview(label)
-        
-        // Configura el tamaño fijo de la celda (por ejemplo, 100x100)
-        label.frame = CGRect(x: 0, y: 0, width: frame.width, height: frame.height)
-        label.autoresizingMask = [.flexibleWidth, .flexibleHeight] // Asegura que el label se ajuste si cambia el tamaño de la celda
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    func configure(with text: String) {
-        label.text = text
-    }
-}

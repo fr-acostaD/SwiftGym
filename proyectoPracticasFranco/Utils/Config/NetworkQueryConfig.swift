@@ -9,7 +9,7 @@
 struct QueryParametersConfig {
     static let parameterNames: [String: ParameterKeys] = [:]
 //    [
-//        Constants.API.productionBaseURL: ParameterKeys(
+//        Constants.API.gptBaseURL: ParameterKeys(
 //            pagination: ["page": "page", "limit": "limit"],
 //            search: "q",
 //            filters: ["category": "category", "sortBy": "sortBy"]

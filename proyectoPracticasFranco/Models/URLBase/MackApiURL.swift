@@ -1,4 +1,12 @@
 //
+//  GptBaseURL 2.swift
+//  proyectoPracticasFranco
+//
+//  Created by Franco Ramiro Acosta Diaz on 12/11/24.
+//
+
+
+//
 //  GptBaseURL.swift
 //  proyectoPracticasFranco
 //
@@ -7,7 +15,7 @@
 
 
 
-struct GptBaseURL: BaseURL {
+struct MackApiURL: BaseURL {
     let url: String
     let headers: [String : String] =
     [
@@ -18,9 +26,7 @@ struct GptBaseURL: BaseURL {
     
 //    Cambiar a un enum
     enum path: String {
-        case post       = "/posts"
-        case user       = "/users"
-        case comments   = "/comments"
+        case cardv0       = "/cardv0"
     }
     
         init(_ baseUrl: String) {
