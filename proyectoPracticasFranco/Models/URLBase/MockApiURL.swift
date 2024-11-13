@@ -26,7 +26,7 @@ struct MockApiURL: BaseURL {
     
 //    Cambiar a un enum
     enum path: String {
-        case cardv0       = "/cardv0"
+        case cardv0       = "/v3/c5de61fd-ff89-4c0a-8fdc-443ad9a94925"
     }
     
         init(_ baseUrl: String) {

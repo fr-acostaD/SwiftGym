@@ -66,6 +66,7 @@ extension URLRequest {
         for (key, value) in endpoint.baseURL.headers {
             self.setValue(value, forHTTPHeaderField: key)
         }
+
 //        if endpoint.httpMethod == .post || endpoint.httpMethod == .put {
 //            self.setValue("application/json", forHTTPHeaderField: "Content-Type")
 //        }
