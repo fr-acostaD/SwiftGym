@@ -28,7 +28,7 @@ enum UtilsFunc {
         let screenWidth = UIScreen.main.bounds.width
         let screenHeight = UIScreen.main.bounds.height
         let widthRatio = screenWidth / Constants.sizeWidth
-        let heightRatio = screenHeight / Constants.sizeHeight // Cambia 874 si es diferente en tu diseño original
+        let heightRatio = screenHeight / Constants.sizeHeight
         let ratio = (ratioType ? widthRatio : heightRatio)
         
         return CGRect(x: x * ratio, y: y * ratio, width: width * ratio, height: height * ratio)

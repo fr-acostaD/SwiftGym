@@ -27,7 +27,8 @@ class NetworkManager {
     }
     
     private func request<T: Codable>(request: URLRequest, taskType: TaskType, downloadPath: String? = nil, data: Data? = nil, completion: @escaping (Result<T, NetworkError>) -> Void) {
-        
+        print("Request URL: \(request.url?.absoluteString ?? "Invalid URL")")
+
         switch taskType {
         case .dataTask:
             let task = session.dataTask(with: request) { data, response, error in
@@ -118,5 +119,3 @@ enum TaskType {
     case uploadTask
     case downloadTask
 }
-
-

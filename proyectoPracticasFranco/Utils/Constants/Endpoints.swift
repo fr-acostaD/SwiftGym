@@ -26,11 +26,11 @@ struct EndPoints{
     
     static let endpointCardV0: Endpoint = {
         
-        let baseURL = Constants.API.beeceptorURL
+        let baseURL = Constants.API.mockApiURL
 
         return Endpoint(
             baseURL: baseURL,
-            path: BeeceptorURL.path.cardv0.rawValue,
+            path: MockApiURL.path.cardv0.rawValue,
             queryItems: [
 //                QueryParameters.pagination(page: 1, limit: 20),
 //                QueryParameters.search(query: "swift"),

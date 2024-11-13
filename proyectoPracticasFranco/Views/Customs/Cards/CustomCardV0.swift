@@ -67,7 +67,7 @@ class CustomCardV0: UIView {
         configureHeaderText()
         configureTextLabels()
         //API SetUp
-                UtilsFunc.fetchCardData(endPoint: EndPoints.endpointCardV1) {
+                UtilsFunc.fetchCardData(endPoint: EndPoints.endpointCardV0) {
                     (result: Result<CardV0, NetworkError>) in
         
                     switch result {
