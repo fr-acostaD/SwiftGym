@@ -10,11 +10,27 @@ struct EndPoints{
 
     static let endpointCardV1: Endpoint = {
         
-        let baseURL = Constants.API.beeceptorURL
+        let baseURL = Constants.API.mockApiURL
 
         return Endpoint(
             baseURL: baseURL,
-            path: BeeceptorURL.path.cardv1.rawValue,
+            path: MockApiURL.path.cardv1.rawValue,
+            queryItems: [
+//                QueryParameters.pagination(page: 1, limit: 20),
+//                QueryParameters.search(query: "swift"),
+//                QueryParameters.filters(category: "books", sortBy: "price"),
+            ],
+            httpMethod: .get
+        )
+    }()
+    
+    static let endpointCardV2: Endpoint = {
+        
+        let baseURL = Constants.API.mockApiURL
+
+        return Endpoint(
+            baseURL: baseURL,
+            path: MockApiURL.path.cardv2.rawValue,
             queryItems: [
 //                QueryParameters.pagination(page: 1, limit: 20),
 //                QueryParameters.search(query: "swift"),
@@ -30,7 +46,7 @@ struct EndPoints{
 
         return Endpoint(
             baseURL: baseURL,
-            path: MockApiURL.path.cardv0.rawValue,
+            path: MockApiURL.path.cardv0_1.rawValue,
             queryItems: [
 //                QueryParameters.pagination(page: 1, limit: 20),
 //                QueryParameters.search(query: "swift"),

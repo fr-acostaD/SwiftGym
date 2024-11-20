@@ -2,37 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <!-- Configuración de App Transport Security -->
-    <key>NSAppTransportSecurity</key>
-    <dict>
-        <key>NSExceptionDomains</key>
-        <dict>
-            <key>free.beeceptor.com</key>
-            <dict>
-                <!-- Permitir conexiones inseguras, incluso si el servidor usa un certificado no válido -->
-                <key>NSExceptionAllowsInsecureHTTPLoads</key>
-                <true/>
-                
-                <!-- Permitir subdominios -->
-                <key>NSIncludesSubdomains</key>
-                <true/>
-                
-                <!-- No requiere Forward Secrecy -->
-                <key>NSExceptionRequiresForwardSecrecy</key>
-                <false/>
-                
-                <!-- Desactiva la validación de certificados (para casos de desarrollo) -->
-                <key>NSExceptionAllowsInsecureTLS</key>
-                <true/>
-                
-                <!-- Permite una configuración TLS menos estricta -->
-                <key>NSExceptionTLSMinimumSupportedProtocol</key>
-                <string>TLSv1.0</string>
-            </dict>
-        </dict>
-    </dict>
-
-    <!-- Configuración de la escena de la aplicación -->
     <key>UIApplicationSceneManifest</key>
     <dict>
         <key>UIApplicationSupportsMultipleScenes</key>

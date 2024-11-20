@@ -7,17 +7,19 @@
 
 import UIKit
 
-class CustomCardV2: UIView {
+class CustomCardV2: UIView, CustomCardView {
+
 
     // MARK: - Fields
-    private var action: (() -> Void)?
-        
+    private var processValue: Double?
+    
     // MARK: - Constants
-    private let baseSize = CGSize(width: 346, height: 104)
-
+    static var baseSize = CGSize(width: 346, height: 104)
+    
     // MARK: - UI Components
-    private let checkIcon = UIImageView()
-    private let percentageIcon = UIImageView()
+    private var checkIcon: UIImageView?
+    private var percentageIcon: UIImageView?
+    
     private let excersiseImage = UIImageView()
     
     private let barView = UIView()
@@ -30,12 +32,11 @@ class CustomCardV2: UIView {
     private let typeText = UILabel()
     
     private let circle1 = CircleView(color: .black)
+    private let loadingIndicator = UIActivityIndicatorView(style: .large)
 
     // MARK: - Initializers
-    init(position: CGPoint, action: (() -> Void)? = nil) {
-        self.action = action
-        let fixedFrame = CGRect(origin: position, size: CGSize(width: UtilsFunc.doResponsive(baseSize.width), height: UtilsFunc.doResponsive(baseSize.height)))
-        super.init(frame: fixedFrame)
+    init() {
+        super.init(frame: .zero)
         setupView()
     }
 
@@ -48,10 +49,9 @@ class CustomCardV2: UIView {
         self.backgroundColor = .lightGray
 
         // Components Configurations
+        configureBackgroundImage()
         configureBarView()
         configureType()
-        // Image
-        configureImages()
         // Icons
         configureIcons()
         // Texts
@@ -62,6 +62,16 @@ class CustomCardV2: UIView {
     }
 
     // MARK: - Configuration Methods for Subcomponents
+    private func configureBackgroundImage() {
+        excersiseImage.contentMode = .scaleToFill
+        excersiseImage.clipsToBounds = true
+        excersiseImage.translatesAutoresizingMaskIntoConstraints = false
+        
+        loadingIndicator.color = .orange
+        loadingIndicator.hidesWhenStopped = true
+        loadingIndicator.startAnimating()
+    }
+    
     private func configureBarView() {
         barView.backgroundColor = .gray
         barView.clipsToBounds = true
@@ -75,53 +85,76 @@ class CustomCardV2: UIView {
     }
 
     private func configureIcons() {
-        checkIcon.contentMode = .scaleAspectFit
-        checkIcon.tintColor = .black
-        checkIcon.isUserInteractionEnabled = true
-        checkIcon.image = UIImage(systemName: "checkmark.circle")
-
         
-        percentageIcon.contentMode = .scaleAspectFit
-        percentageIcon.tintColor = .blue
-        percentageIcon.isUserInteractionEnabled = true
-        percentageIcon.image = UIImage(systemName: "clock.fill")
+        checkIcon = UIImageView.createIcon(systemName: "checkmark.circle", tintColor: .black, contentMode: .scaleAspectFit)
+        percentageIcon = UIImageView.createIcon(systemName: "checkmark.circle", tintColor: .blue, contentMode: .scaleAspectFit)
 }
 
     private func configureHeaderText() {
         headerText.textAlignment = .center
         headerText.textColor = .black
-        headerText.text = "Total Body Circuit"
         headerText.adjustsFontSizeToFitWidth = true
         headerText.minimumScaleFactor = 0.5
-    }
-
-    private func configureImages() {
-        excersiseImage.contentMode = .scaleAspectFit
-//        excersiseImage.image = nil
-        excersiseImage.tintColor = .blue
     }
 
     private func configureTextLabels() {
         movementText.textAlignment = .center
         movementText.textColor = .black
-        movementText.text = "Movement 4"
 
         percentageText.textAlignment = .center
         percentageText.textColor = .black
-        percentageText.text = "84%"
 
         typeText.textAlignment = .center
         typeText.textColor = .black
-        typeText.text = "Yoga"
     }
     
+    func fetchData(endPoint: Endpoint, index at: Int = 0)
+    {
+        
+        UtilsFunc.fetchCardData(endPoint: endPoint)
+        {
+            (result: Result<[CardV2], NetworkError>) in
+            switch result {
+            case .success(let cardData):
+                // Actualizar UI con los datos
+                DispatchQueue.main.async {
+                    self.updateCardView(with: cardData[at])
+                }
+            case .failure(let error):
+                print("Error: \(error)")
+            }
+        }
+    }
+
+    public func updateCardView(with cardData: Codable) {
+        guard let cardData = cardData as? CardV2 else {return}
+        
+        // Actualizar textos
+        headerText.text = cardData.header ?? "Total Body Circuit"
+        percentageText.text = cardData.percentage ?? "84%"
+        processValue = Double(cardData.process ?? "0.8")!
+        typeText.text = cardData.type ?? "Yoga"
+        movementText.text = cardData.movement ?? "Movement 4"
+        // Cargar imagen de fondo
+        if let imageUrlString = cardData.imageURL, let url = URL(string: imageUrlString) {
+            
+            UtilsFunc.loadImage(from: url) { image in
+                self.excersiseImage.image = image
+
+                self.loadingIndicator.stopAnimating()
+            }
+        }
+    }
     // MARK: - Layout
     override func layoutSubviews() {
         super.layoutSubviews()
         
+        
         // Self SetUp
-        self.frame.size = CGSize(width: UtilsFunc.doResponsive(baseSize.width), height: UtilsFunc.doResponsive(baseSize.height))
-        self.layer.cornerRadius = UtilsFunc.doResponsive(32)
+        self.frame.size = CGSize(width: UtilsFunc.doResponsive(CustomCardV2.baseSize.width), height: UtilsFunc.doResponsive(CustomCardV2.baseSize.height))
+        self.layer.cornerRadius = UtilsFunc.doResponsive(20)
+        excersiseImage.frame = UtilsFunc.responsiveCGRect(width: 79, height: 82, x: 11, y: 13)
+        excersiseImage.layer.cornerRadius = UtilsFunc.doResponsive(20)
         
         // Frames
         frameSetUp()
@@ -141,7 +174,6 @@ class CustomCardV2: UIView {
     }
     
     private func borderSetUp() {
-        excersiseImage.layer.cornerRadius = UtilsFunc.doResponsive(20)
         typeView.layer.cornerRadius = UtilsFunc.doResponsive(12)
         barView.layer.cornerRadius = UtilsFunc.doResponsive(4.5)
         barViewContent.layer.cornerRadius = UtilsFunc.doResponsive(4.5)
@@ -149,14 +181,13 @@ class CustomCardV2: UIView {
 
     private func frameSetUp() {
         // Block
-        excersiseImage.frame = UtilsFunc.responsiveCGRect(width: 79, height: 82, x: 11, y: 13)
         typeView.frame = UtilsFunc.responsiveCGRect(width: 46, height: 27, x: 236, y: 13)
         barView.frame = UtilsFunc.responsiveCGRect(width: 227, height: 9, x: 105, y: 50)
-        barViewContent.frame = UtilsFunc.responsiveCGRect(width: 180, height: 9, x: 105, y: 50)
+        barViewContent.frame = UtilsFunc.responsiveCGRect(width: (self.barView.frame.width * (processValue ?? 0.8)), height: 9, x: 105, y: 50)
 
         // Icons
-        checkIcon.frame = UtilsFunc.responsiveCGRect(width: 15, height: 15, x: 105, y: 75)
-        percentageIcon.frame = UtilsFunc.responsiveCGRect(width: 15, height: 15, x: 220, y: 75)
+        checkIcon?.frame = UtilsFunc.responsiveCGRect(width: 15, height: 15, x: 105, y: 75)
+        percentageIcon?.frame = UtilsFunc.responsiveCGRect(width: 15, height: 15, x: 220, y: 75)
         
         circle1.frame = UtilsFunc.responsiveCGRect(width: 5, height: 5, x: 204, y: 79)
 
@@ -170,6 +201,8 @@ class CustomCardV2: UIView {
 
     private func addLayouts()
     {
+
+
         // TypeView
         self.addSubview(typeView)
         typeView.addSubview(typeText)
@@ -180,10 +213,11 @@ class CustomCardV2: UIView {
         
         // Image
         self.addSubview(excersiseImage)
+        excersiseImage.addSubview(loadingIndicator)
         
         // Icons
-        self.addSubview(checkIcon)
-        self.addSubview(percentageIcon)
+        self.addSubview(checkIcon!)
+        self.addSubview(percentageIcon!)
 
         self.addSubview(circle1)
 

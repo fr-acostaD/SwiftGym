@@ -16,13 +16,8 @@ struct Constants {
 
     
     struct API {
-        static let gptBaseURL = GptBaseURL("api.openai.com/")
         static let beeceptorURL = BeeceptorURL("gymswift.free.beeceptor.com")
         static let mockApiURL = MockApiURL("run.mocky.io")
-//        static let stagingBaseURL = "api.staging.com"
-//        static let devBaseURL = "api.dev.com"
-
-        
     }
     
     struct Scheme {

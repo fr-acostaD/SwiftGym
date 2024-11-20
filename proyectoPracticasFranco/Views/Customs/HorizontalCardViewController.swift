@@ -3,9 +3,10 @@ import UIKit
 class HorizontalCardViewController: UICollectionView, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     private let layout = UICollectionViewFlowLayout()
-
+//    private let customCard: UIView!
     
     init(){
+//        self.customCard = customCard
         super.init(frame: .zero, collectionViewLayout: layout)
         setupCollectionView()
     }
@@ -94,13 +95,12 @@ class HorizontalCardViewController: UICollectionView, UICollectionViewDataSource
 // MARK: - CardCell
 
 class CardCollectionViewCell: UICollectionViewCell {
-    private var customCard: CustomCardV1!
+//    private var customCard: UIView!
     
     // Inicializamos la celda con un frame dado
     override init(frame: CGRect) {
         super.init(frame: frame)
-        customCard = CustomCardV1(position: .zero)
-        contentView.addSubview(customCard)
+//        contentView.addSubview(customCard)
     }
     
     required init?(coder: NSCoder) {
@@ -110,5 +110,6 @@ class CardCollectionViewCell: UICollectionViewCell {
     // Hacer que la celda se ajuste al tamaño correcto cuando el layout cambia
     override func layoutSubviews() {
         super.layoutSubviews()
-        customCard.frame = UtilsFunc.responsiveCGRect(width: self.frame.width, height: self.frame.height, x: 0, y: 0)    }
+        //        customCard.frame = UtilsFunc.responsiveCGRect(width: self.frame.width, height: self.frame.height, x: 0, y: 0)
+    }
 }

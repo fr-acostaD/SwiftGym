@@ -83,6 +83,12 @@ class NetworkManager {
             return
         }
         
+        if T.self == Data.self {
+            print(data, "Esto es asi----<")
+            completion(.success(data as! T))
+            return
+        }
+
         // Intentar decodificar la respuesta
         do {
             let decoder = JSONDecoder()

@@ -39,21 +39,22 @@ enum UtilsFunc {
         NetworkManager.shared.get(url: endPoint.request!, completion: completion)
     }
 
-    static  func loadImage(from url: URL) -> Data?{
-        var imageFromData: Data?
+    static func loadImage(from url: URL, completion: @escaping (UIImage?) -> Void) {
         let request = URLRequest(url: url)
+        let loadingIndicator = UIActivityIndicatorView(style: .large)
 
         NetworkManager.shared.get(url: request) { (result: Result<Data, NetworkError>) in
             switch result {
             case .success(let imageData):
                 DispatchQueue.main.async {
-                    imageFromData = imageData
+                    let image = UIImage(data: imageData)
+                    completion(image) // Retorna la imagen al bloque de finalización
                 }
             case .failure(_):
-                imageFromData = nil
+                DispatchQueue.main.async {
+                    completion(nil) // Si la descarga falla, retorna nil
+                }
             }
         }
-        return imageFromData
     }
-
 }

@@ -7,25 +7,22 @@
 
 import UIKit
 
-class CustomCardV0: UIView {
+class CustomCardV0: UIView, CustomCardView {
 
     // MARK: - Fields
-    private var action: (() -> Void)?
-    private var cardV0: CardV0!
-
     
     // MARK: - Constants
-    private let baseSize = CGSize(width: 343, height: 258)
+    static var baseSize = CGSize(width: 343, height: 258)
     
     // MARK: - UI Components
     private let backgroundImage = UIImageView()
 
-    private let fireIcon = UIImageView()
-    private let timeIcon = UIImageView()
-    private let dummbleIcon = UIImageView()
-    private let likeIcon = UIImageView()
-    private let shareIcon = UIImageView()
-    private let playIcon = UIImageView()
+    private var fireIcon: UIImageView?
+    private var timeIcon: UIImageView?
+    private var dummbleIcon: UIImageView?
+    private var likeIcon: UIImageView?
+    private var shareIcon: UIImageView?
+    private var playIcon: UIImageView?
     
     private let levelType = UIView()
     private let continueView = UIView()
@@ -38,14 +35,12 @@ class CustomCardV0: UIView {
     
     private let circle1 = CircleView(color: .lightGray)
     private let circle2 = CircleView(color: .lightGray)
+    private let loadingIndicator = UIActivityIndicatorView(style: .large)
 
 
     // MARK: - Initializers
-    init(position: CGPoint, cardV0: CardV0 = CardV0() ,action: (() -> Void)? = nil) {
-        self.action = action
-        self.cardV0 = cardV0
-        let fixedFrame = CGRect(origin: position, size: CGSize(width: UtilsFunc.doResponsive(baseSize.width), height: UtilsFunc.doResponsive(baseSize.height)))
-        super.init(frame: fixedFrame)
+    init() {
+        super.init(frame: .zero)
         setupView()
     }
 
@@ -56,9 +51,9 @@ class CustomCardV0: UIView {
     // MARK: - Setup Methods
     private func setupView() {
         self.backgroundColor = .black
-//        self.layer.cornerRadius = 0
 
         // Components Configurations
+        configureBackgroundImage()
         configureContinueView()
         configureLevelType()
         // Icons
@@ -66,136 +61,112 @@ class CustomCardV0: UIView {
         // Texts
         configureHeaderText()
         configureTextLabels()
-        //API SetUp
-                UtilsFunc.fetchCardData(endPoint: EndPoints.endpointCardV0) {
-                    (result: Result<CardV0, NetworkError>) in
         
-                    switch result {
-                    case .success(let cardData):
-                        // Actualizar UI con los datos
-                        DispatchQueue.main.async {
-                            self.updateCardView(with: cardData)
-                        }
-                    case .failure(let error):
-                        print("Error: \(error)")
-                    }
-                }
         // Add SubViews
         addLayouts()
     }
 
     // MARK: - Configuration Methods for Subcomponents
+    
+    private func configureBackgroundImage() {
+        backgroundImage.contentMode = .scaleToFill
+        backgroundImage.clipsToBounds = true
+        backgroundImage.translatesAutoresizingMaskIntoConstraints = false
+        
+        loadingIndicator.color = .orange
+        loadingIndicator.hidesWhenStopped = true
+        self.loadingIndicator.startAnimating()
+    }
+    
     private func configureContinueView() {
-//        continueView.layer.borderWidth = 0    
         continueView.layer.borderColor = UIColor.red.cgColor
         continueView.backgroundColor = .orange
-        
-        backgroundImage.contentMode = .scaleToFill
-        backgroundImage.translatesAutoresizingMaskIntoConstraints = false
-
     }
     
     private func configureLevelType() {
         levelType.backgroundColor = .gray
-//        levelType.layer.cornerRadius = 0
     }
 
     private func configureIcons() {
-        playIcon.contentMode = .scaleAspectFit
-        playIcon.tintColor = .white
-        playIcon.isUserInteractionEnabled = true
-        playIcon.image = UIImage(systemName: "play.fill")
-
-        shareIcon.tintColor = .gray
-        shareIcon.contentMode = .scaleAspectFit
-        shareIcon.isUserInteractionEnabled = true    
-        shareIcon.image = UIImage(systemName: "square.and.arrow.up")
-
-        likeIcon.contentMode = .scaleAspectFit
-        likeIcon.tintColor = .gray
-        likeIcon.isUserInteractionEnabled = true
-        likeIcon.image = UIImage(systemName: "heart.fill")
-        
-        timeIcon.contentMode = .scaleAspectFit
-        timeIcon.tintColor = .blue
-        timeIcon.isUserInteractionEnabled = true
-        timeIcon.image = UIImage(systemName: "clock.fill")
-        
-        fireIcon.contentMode = .scaleAspectFit
-        fireIcon.tintColor = .systemOrange
-        fireIcon.isUserInteractionEnabled = true
-        fireIcon.image = UIImage(systemName: "flame.fill")
-        
-        dummbleIcon.contentMode = .scaleAspectFit
-        dummbleIcon.tintColor = .blue
-        dummbleIcon.isUserInteractionEnabled = true
-        dummbleIcon.image = UIImage(systemName: "heart.fill")
+            // Inicializar los iconos aquí
+            fireIcon = UIImageView.createIcon(systemName: "flame.fill", tintColor: .systemOrange, contentMode: .scaleAspectFit)
+            timeIcon = UIImageView.createIcon(systemName: "clock.fill", tintColor: .blue, contentMode: .scaleAspectFit)
+            dummbleIcon = UIImageView.createIcon(systemName: "heart.fill", tintColor: .blue, contentMode: .scaleAspectFit)
+            likeIcon = UIImageView.createIcon(systemName: "heart.fill", tintColor: .gray, contentMode: .scaleAspectFit)
+            shareIcon = UIImageView.createIcon(systemName: "square.and.arrow.up", tintColor: .gray, contentMode: .scaleAspectFit)
+            playIcon = UIImageView.createIcon(systemName: "play.fill", tintColor: .white, contentMode: .scaleAspectFit)
 }
-    
+        
     private func configureHeaderText() {
         headerText.textAlignment = .center
         headerText.textColor = .white
-//        headerText.font = UIFont.systemFont(ofSize: 0, weight: .bold)    
-//        headerText.text = cardV0.header ?? "Total Body Circuit"
     }
 
     private func configureTextLabels() {
         timeText.textAlignment = .center
         timeText.textColor = .lightGray
-//        timeText.font = UIFont.systemFont(ofSize: 0, weight: .bold)    
-//        timeText.text = cardV0.mint ?? "35min"
 
         calTexts.textAlignment = .center
         calTexts.textColor = .lightGray
-//        calTexts.font = UIFont.systemFont(ofSize: 0, weight: .bold)    
-//        calTexts.text = cardV0.cal ?? "205Kcal"
 
         typeText.textAlignment = .center
         typeText.textColor = .lightGray
-//        typeText.font = UIFont.systemFont(ofSize: 0, weight: .bold)    
-//        typeText.text = cardV0.type ?? "Upper Body"
+
 
         levelText.textAlignment = .center
         levelText.textColor = .white
-//        levelText.font = UIFont.systemFont(ofSize: 0, weight: .bold)    
-//        levelText.text = cardV0.level ?? "Intermediate"
+
     }
-
-    private func configureShareAndLikeIcons() {
-        shareIcon.contentMode = .scaleAspectFit
-        shareIcon.tintColor = .gray
-        shareIcon.isUserInteractionEnabled = true
-        shareIcon.image = UIImage(systemName: "square.and.arrow.up")
-
-        likeIcon.contentMode = .scaleAspectFit
-        likeIcon.tintColor = .gray
-        likeIcon.isUserInteractionEnabled = true
-        likeIcon.image = UIImage(systemName: "heart.fill")
+    
+    func fetchData(endPoint: Endpoint, index at: Int = 0)
+    {
+        
+        UtilsFunc.fetchCardData(endPoint: endPoint)
+        {
+            (result: Result<[CardV0], NetworkError>) in
+            switch result {
+            case .success(let cardData):
+                // Actualizar UI con los datos
+                DispatchQueue.main.async {
+                    self.updateCardView(with: cardData[at])
+                }
+            case .failure(let error):
+                print("Error: \(error)")
+            }
+        }
     }
+    
+    public func updateCardView(with cardData: Codable) {
+        guard let cardData = cardData as? CardV0 else {return}
 
-    private func updateCardView(with cardData: CardV0) {
         // Actualizar textos
         typeText.text = cardData.type ?? "Upper Body"
         calTexts.text = cardData.cal ?? "205Kcal"
         timeText.text = cardData.mint ?? "35min"
         levelText.text = cardData.level ?? "Intermediate"
         headerText.text = cardData.header ?? "Total Body Circuit"
+        
+        if let imageUrlString = cardData.imageURL, let url = URL(string: imageUrlString) {
+            
+            UtilsFunc.loadImage(from: url) { image in
+                self.backgroundImage.image = image
 
-        // Cargar imagen de fondo
-        if cardData.imageURL != nil{
-            if let imageData = UtilsFunc.loadImage(from: URL(string: cardData.imageURL!)!) {
-                self.backgroundImage.image = UIImage(data: imageData)
+                self.loadingIndicator.stopAnimating()
             }
         }
     }
+
+    
     // MARK: - Layout
     override func layoutSubviews() {
         super.layoutSubviews()
         
         // Self SetUp
-        self.frame.size = CGSize(width: UtilsFunc.doResponsive(baseSize.width), height: UtilsFunc.doResponsive(baseSize.height))
+        self.frame.size = CGSize(width: UtilsFunc.doResponsive(CustomCardV0.baseSize.width), height: UtilsFunc.doResponsive(CustomCardV0.baseSize.height))
         self.layer.cornerRadius = UtilsFunc.doResponsive(20)
-        
+        backgroundImage.frame = self.bounds
+        backgroundImage.layer.cornerRadius = self.layer.cornerRadius
+
         // Frames
         frameSetUp()
 
@@ -207,8 +178,6 @@ class CustomCardV0: UIView {
     }
 
     private func updateFonts() {
-        backgroundImage.frame = UtilsFunc.responsiveCGRect(width: self.frame.width, height: self.frame.height, x: 0, y: 0)
-
 
         headerText.font = UIFont.systemFont(ofSize: UtilsFunc.responsiveText(20), weight: .black)
         timeText.font = UIFont.systemFont(ofSize: UtilsFunc.responsiveText(11), weight: .bold)
@@ -227,14 +196,16 @@ class CustomCardV0: UIView {
         // Block
         continueView.frame = UtilsFunc.responsiveCGRect(width: 53, height: 53, x: 277, y: 190)
         levelType.frame = UtilsFunc.responsiveCGRect(width: 80, height: 25, x: 16, y: 18)
-        
+        loadingIndicator.center = CGPoint(x: UtilsFunc.doResponsive(self.bounds.midX),
+                                          y: UtilsFunc.doResponsive(self.bounds.midY))
+
         // Icons
-        playIcon.frame = UtilsFunc.responsiveCGRect(width: 24, height: 24, x: 15, y: 15)
-        shareIcon.frame = UtilsFunc.responsiveCGRect(width: 27, height: 27, x: 264, y: 17)
-        likeIcon.frame = UtilsFunc.responsiveCGRect(width: 27, height: 27, x: 302, y: 17)
-        fireIcon.frame = UtilsFunc.responsiveCGRect(width: 15, height: 15, x: 93, y: 225)
-        timeIcon.frame = UtilsFunc.responsiveCGRect(width: 15, height: 15, x: 16, y: 225)
-        dummbleIcon.frame = UtilsFunc.responsiveCGRect(width: 15, height: 15, x: 178, y: 226)
+        playIcon?.frame = UtilsFunc.responsiveCGRect(width: 24, height: 24, x: 15, y: 15)
+        shareIcon?.frame = UtilsFunc.responsiveCGRect(width: 27, height: 27, x: 264, y: 17)
+        likeIcon?.frame = UtilsFunc.responsiveCGRect(width: 27, height: 27, x: 302, y: 17)
+        fireIcon?.frame = UtilsFunc.responsiveCGRect(width: 15, height: 15, x: 93, y: 225)
+        timeIcon?.frame = UtilsFunc.responsiveCGRect(width: 15, height: 15, x: 16, y: 225)
+        dummbleIcon?.frame = UtilsFunc.responsiveCGRect(width: 15, height: 15, x: 178, y: 226)
         
         circle1.frame = UtilsFunc.responsiveCGRect(width: 5, height: 5, x: 80, y: 231)
         circle2.frame = UtilsFunc.responsiveCGRect(width: 5, height: 5, x: 168, y: 231)
@@ -250,22 +221,23 @@ class CustomCardV0: UIView {
     private func addLayouts()
     {
         self.addSubview(backgroundImage)
+        self.addSubview(loadingIndicator)
 
         
         // ContinueView
         self.addSubview(continueView)
-        continueView.addSubview(playIcon)
+        continueView.addSubview(playIcon!)
         
         // LevelType
         self.addSubview(levelType)
         levelType.addSubview(levelText)
         
         // Icons
-        self.addSubview(shareIcon)
-        self.addSubview(likeIcon)
-        self.addSubview(timeIcon)
-        self.addSubview(fireIcon)
-        self.addSubview(dummbleIcon)
+        self.addSubview(shareIcon!)
+        self.addSubview(likeIcon!)
+        self.addSubview(timeIcon!)
+        self.addSubview(fireIcon!)
+        self.addSubview(dummbleIcon!)
 
         self.addSubview(circle1)
         self.addSubview(circle2)
@@ -285,3 +257,13 @@ class CustomCardV0: UIView {
     // continue
 }
 
+extension UIImageView {
+    static func createIcon(systemName: String, tintColor: UIColor = .gray, contentMode: UIView.ContentMode = .scaleAspectFit) -> UIImageView {
+        let iconView = UIImageView()
+        iconView.image = UIImage(systemName: systemName)
+        iconView.tintColor = tintColor
+        iconView.contentMode = contentMode
+        iconView.isUserInteractionEnabled = true
+        return iconView
+    }
+}

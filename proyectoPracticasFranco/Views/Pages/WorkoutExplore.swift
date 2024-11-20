@@ -18,18 +18,24 @@ class ExploreWorkout: UIViewController {
     // MARK: - Initializers
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        setupUI()
-        setupActions()
     }
     
     required init?(coder: NSCoder) {
         fatalError("StoryBoard is not be able in this Controller")
     }
     
+    
+    override func loadView() {
+        setupUI()
+        setupActions()
+    }
+    
 //    override func viewDidLayoutSubviews() {
 //        super.viewDidLayoutSubviews()
 //        setupLayOut()
 //    }
+    
+    
     // MARK: - Setup Methods
     private func setupUI() {
         view.backgroundColor = .white
