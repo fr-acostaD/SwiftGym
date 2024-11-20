@@ -13,7 +13,8 @@ xcuserdata/
 /*.xcuserstate
 /*.xcworkspace
 /*.xcworkspacedata
- 
+/*.xcuserstate
+
 # Swift Package Manager
 .build/
  
