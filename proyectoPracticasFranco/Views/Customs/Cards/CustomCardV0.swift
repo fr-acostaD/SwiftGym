@@ -12,7 +12,7 @@ class CustomCardV0: UIView, CustomCardView {
     // MARK: - Fields
     
     // MARK: - Constants
-    static var baseSize = CGSize(width: 343, height: 258)
+    static var baseSizeFromButton = CGSize(width: 343, height: 258)
     
     // MARK: - UI Components
     private let backgroundImage = UIImageView()
