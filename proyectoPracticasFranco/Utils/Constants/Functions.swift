@@ -41,7 +41,6 @@ enum UtilsFunc {
 
     static func loadImage(from url: URL, completion: @escaping (UIImage?) -> Void) {
         let request = URLRequest(url: url)
-        let loadingIndicator = UIActivityIndicatorView(style: .large)
 
         NetworkManager.shared.get(url: request) { (result: Result<Data, NetworkError>) in
             switch result {
