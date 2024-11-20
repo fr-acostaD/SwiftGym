@@ -5,12 +5,11 @@ class MainViewController: UIViewController {
     // MARK: - Constants
     
     // MARK: - Fields
-    
-    // MARK: - UI Components    
+    let urlImage: String = "https://thispersondoesnotexist.com/"
+    let userName: String = "Franco"
+    // MARK: - UI Components
     private var containerViewV0: CustomCardV0!
-    private var containerViewV1: CustomCardV1!
-    private var containerViewV2: CustomCardV2!
-    
+
     private var scrollView = UIScrollView()
      
     private let porfilePicture =  UIImageView()
@@ -112,7 +111,7 @@ class MainViewController: UIViewController {
         
         greetingsText2.textAlignment = .center
         greetingsText2.textColor = .black
-        greetingsText2.text = "Hello, Franco!"
+        greetingsText2.text = "Hello, \(userName)!"
     }
 
     private func textTitle4Config(titleText4: UILabel) -> Void{
@@ -127,7 +126,9 @@ class MainViewController: UIViewController {
         porfilePicture.isUserInteractionEnabled = true
         porfilePicture.image = UIImage(systemName: "person.circle.fill")
         porfilePicture.clipsToBounds = true
-
+        UtilsFunc.loadImage(from: URL(string: urlImage)!) { image in
+            self.porfilePicture.image = image
+        }
         searchIcon.contentMode = .scaleAspectFit
         searchIcon.tintColor = .gray
         searchIcon.isUserInteractionEnabled = true
@@ -157,8 +158,6 @@ class MainViewController: UIViewController {
             x: 0,
             y: safeArea.top
         )
-            
-        // Fit the Scroll Size to ContentView
         scrollView.contentSize = CGSize(width: UtilsFunc.doResponsive(view.bounds.width), height: UtilsFunc.doResponsive(1338))
         
         // Cards Responsives
@@ -167,9 +166,6 @@ class MainViewController: UIViewController {
         
         cardListView2.frame = UtilsFunc.responsiveCGRect(width: UIScreen.main.bounds.width, height: 404, x: 16, y: 900)
 
-        
-//        containerViewV2.frame.origin = CGPoint(x: UtilsFunc.doResponsive(16), y: UtilsFunc.doResponsive(900))
-        
         // Icons
         porfilePicture.frame = UtilsFunc.responsiveCGRect(width: 57, height: 57, x: 18, y: 59)
         searchButtonView.frame = UtilsFunc.responsiveCGRect(width: 57, height: 57, x: 302, y: 59)

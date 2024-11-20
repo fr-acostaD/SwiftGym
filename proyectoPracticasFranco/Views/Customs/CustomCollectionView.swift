@@ -71,7 +71,7 @@ class CusomCollectionView <T : Codable, CardType : CustomCardView>: UICollection
         cell.updateCard(with: card as T)
         return cell
     }
-    
+
     // MARK: - UICollectionViewDelegate
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
