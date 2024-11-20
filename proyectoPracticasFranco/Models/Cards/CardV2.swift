@@ -11,6 +11,7 @@ struct CardV2: Codable {
     var header: String?
     var process: String?
     var type: String?
+    var movement: String?
     var imageURL: String?
 
     init(){

@@ -11,8 +11,7 @@ class MainViewController: UIViewController {
     private var containerViewV1: CustomCardV1!
     private var containerViewV2: CustomCardV2!
     
-    private var scrollView: UIScrollView!
-    private var contentView: UIView!
+    private var scrollView = UIScrollView()
      
     private let porfilePicture =  UIImageView()
     private let searchIcon =  UIImageView()
@@ -26,36 +25,42 @@ class MainViewController: UIViewController {
     private let titleText4_2 =  UILabel()
     private let titleText4_3 =  UILabel()
 
-    private let cardListView = HorizontalCardViewController()
+    private let cardListView1 = CusomCollectionView<CardV1, CustomCardV1>(endpoint:  EndPoints.endpointCardV1)
+    private let cardListView2 = CusomCollectionView<CardV2, CustomCardV2>(endpoint:  EndPoints.endpointCardV2, scrollType: .vertical)
 
     private let searchButtonView =  UIView()
     
     // MARK: - Initializers
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        setupUI() // Configuración de UI en el inicializador
-        setupActions()
     }
     
     required init?(coder: NSCoder) {
         fatalError("StoryBoard is not be able in this Controller")
     }
     
+    
+    override func loadView() {
+        super.loadView()
+        setupUI()
+        setupActions()
+    }
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         setUpLayOut()
     }
-    
+
     // MARK: - Setup Methods
     
     private func setupUI() {
         // Self Color Background
         view.backgroundColor = .white
-        cardListView.translatesAutoresizingMaskIntoConstraints = false
+        cardListView1.translatesAutoresizingMaskIntoConstraints = false
+        cardListView2.translatesAutoresizingMaskIntoConstraints = false
 
         // Components Configurations
         configureScrollView()
-        configureContentView()
         
         // Cards Configurations
         configureCustomsCards()
@@ -74,27 +79,9 @@ class MainViewController: UIViewController {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
     }
     
-    private func configureContentView() {
-        contentView = UIView()
-        contentView.backgroundColor = .white
-        contentView.translatesAutoresizingMaskIntoConstraints = false
-    }
-    
     private func configureCustomsCards() {
-        containerViewV0 = CustomCardV0(position: CGPoint(x: 16, y: 225))
-        {
-            print("Hola desde Closure Action")
-        }
-        
-        containerViewV1 = CustomCardV1(position: CGPoint(x: 0, y: 0))
-        {
-            print("Hola desde Closure Action")
-        }
-        
-        containerViewV2 = CustomCardV2(position: CGPoint(x: 16, y: 822))
-        {
-            print("Hola desde Closure Action")
-        }
+        containerViewV0 = CustomCardV0()
+        containerViewV0.fetchData(endPoint: EndPoints.endpointCardV0)
     }
     
     private func configureSearchButtom() {
@@ -164,30 +151,24 @@ class MainViewController: UIViewController {
         let safeArea = view.safeAreaInsets
 
         // ScrollView Responsive
-        scrollView.frame = CGRect(
-            x: 0,
-            y: safeArea.top,
+        scrollView.frame = UtilsFunc.responsiveCGRect(
             width: view.bounds.width,
-            height: view.bounds.height - safeArea.top - safeArea.bottom // Super importante esto
+            height: view.bounds.height - safeArea.top - safeArea.bottom, // Super importante esto
+            x: 0,
+            y: safeArea.top
         )
-        contentView.frame = CGRect(
-                                x: 0,
-                                y: 0,
-                                width: view.bounds.width,
-                                height: UtilsFunc.doResponsive(1538)
-        )
-        
+            
         // Fit the Scroll Size to ContentView
-        scrollView.contentSize = CGSize(width: contentView.bounds.width, height: contentView.bounds.height)
+        scrollView.contentSize = CGSize(width: UtilsFunc.doResponsive(view.bounds.width), height: UtilsFunc.doResponsive(1338))
         
         // Cards Responsives
-        containerViewV0.frame.origin = CGPoint(x: UtilsFunc.doResponsive(16), y: UtilsFunc.doResponsive(215))
-        cardListView.frame = UtilsFunc.responsiveCGRect(width: UIScreen.main.bounds.width, height: 250, x: 16, y: 545)
-//
-//            .origin = CGPoint(x: Utils.doResponsive(0), y: Utils.doResponsive(545))
-//        cardListView.frame.size = CGSize(width: UIScreen.main.bounds.width, height: 234)
+        containerViewV0.frame.origin = CGPoint(x: UtilsFunc.doResponsive(16), y: UtilsFunc.doResponsive(225))
+        cardListView1.frame = UtilsFunc.responsiveCGRect(width: UIScreen.main.bounds.width, height: 300, x: 16, y: 545)
         
-        containerViewV2.frame.origin = CGPoint(x: UtilsFunc.doResponsive(16), y: UtilsFunc.doResponsive(862))
+        cardListView2.frame = UtilsFunc.responsiveCGRect(width: UIScreen.main.bounds.width, height: 404, x: 16, y: 900)
+
+        
+//        containerViewV2.frame.origin = CGPoint(x: UtilsFunc.doResponsive(16), y: UtilsFunc.doResponsive(900))
         
         // Icons
         porfilePicture.frame = UtilsFunc.responsiveCGRect(width: 57, height: 57, x: 18, y: 59)
@@ -200,11 +181,11 @@ class MainViewController: UIViewController {
         greetingsText2.frame = UtilsFunc.responsiveCGRect(width: 135, height: 18, x: 85, y: 87)
         
         titleText1.frame = UtilsFunc.responsiveCGRect(width: 141, height: 18, x: 8, y: 182)
-        titleText2.frame = UtilsFunc.responsiveCGRect(width: 141, height: 18, x: 8, y: 513)
-        titleText3.frame = UtilsFunc.responsiveCGRect(width: 141, height: 18, x: 8, y: 837)
+        titleText2.frame = UtilsFunc.responsiveCGRect(width: 141, height: 18, x: 8, y: 527)
+        titleText3.frame = UtilsFunc.responsiveCGRect(width: 141, height: 18, x: 8, y: 857)
         titleText4_1.frame = UtilsFunc.responsiveCGRect(width: 130, height: 18, x: 267, y: 182)
-        titleText4_2.frame = UtilsFunc.responsiveCGRect(width: 130, height: 18, x: 267, y: 513)
-        titleText4_3.frame = UtilsFunc.responsiveCGRect(width: 130, height: 18, x: 267, y: 837)
+        titleText4_2.frame = UtilsFunc.responsiveCGRect(width: 130, height: 18, x: 267, y: 527)
+        titleText4_3.frame = UtilsFunc.responsiveCGRect(width: 130, height: 18, x: 267, y: 857)
     }
     
     private func borderSetUp() {
@@ -237,39 +218,31 @@ class MainViewController: UIViewController {
     
     @objc private func actionButtonTapped() {
         print("Botón pulsado")
-        print(UIScreen.main.bounds.width)
-        print(view.bounds.width)
-        print(UIScreen.main.bounds.height)
-        print(view.bounds.height)
-        print("Scroll View: ", scrollView.frame)
-        print("Content View:", contentView.frame)
-        print(scrollView.contentSize)
-        print("Alto: ", contentView.bounds.height)
-        print("Horientacion Pantalla: ", view.window!.windowScene!.interfaceOrientation.isPortrait)
     }
 
     private func addLayouts() {
         // ScrollView
         view.addSubview(scrollView)
-        scrollView.addSubview(contentView)
+        
         // Cards
-        contentView.addSubview(containerViewV0)
-//        contentView.addSubview(containerViewV1)
-        contentView.addSubview(containerViewV2)
+        scrollView.addSubview(containerViewV0)
         // Icons
-        contentView.addSubview(porfilePicture)
-        contentView.addSubview(searchButtonView)
+        scrollView.addSubview(porfilePicture)
+        scrollView.addSubview(searchButtonView)
         searchButtonView.addSubview(searchIcon)
         // Texts
-        contentView.addSubview(greetingsText1)
-        contentView.addSubview(greetingsText2)
-        contentView.addSubview(titleText1)
-        contentView.addSubview(titleText2)
-        contentView.addSubview(titleText3)
+        scrollView.addSubview(greetingsText1)
+        scrollView.addSubview(greetingsText2)
+        scrollView.addSubview(titleText1)
+        scrollView.addSubview(titleText2)
+        scrollView.addSubview(titleText3)
         
-        contentView.addSubview(titleText4_1)
-        contentView.addSubview(titleText4_2)
-        contentView.addSubview(titleText4_3)
-        contentView.addSubview(cardListView)
+        scrollView.addSubview(titleText4_1)
+        scrollView.addSubview(titleText4_2)
+        scrollView.addSubview(titleText4_3)
+        // ListCards
+        scrollView.addSubview(cardListView1)
+        scrollView.addSubview(cardListView2)
+
     }
 }

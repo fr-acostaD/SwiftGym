@@ -26,7 +26,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         // Establecer el controlador de vista raíz
         window?.rootViewController = mainViewController
-        
         // Hacer que la ventana sea visible
         window?.makeKeyAndVisible()
     }
@@ -42,10 +41,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         return UINavigationController(rootViewController: explore)
     }
+    private func setUpPageSignIn() -> UINavigationController {
+        let explore = SignInPage()
+        explore.tabBarItem = UITabBarItem(tabBarSystemItem: .contacts, tag: 2)
+
+        return UINavigationController(rootViewController: explore)
+    }
     
     private func tabBarInit() -> UITabBarController {
         let explore = setUpPageExplore()
         let home = setUpPageHome()
+        let signIn = setUpPageSignIn()
         let tabBar = UITabBarController()
 
 
@@ -53,7 +59,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         UITabBar.appearance().barTintColor = .black
         UITabBar.appearance().tintColor = .systemOrange
         UITabBar.appearance().unselectedItemTintColor = .red
-        tabBar.viewControllers = [home, explore]
+        tabBar.viewControllers = [home, signIn, explore]
 
         return tabBar
     }

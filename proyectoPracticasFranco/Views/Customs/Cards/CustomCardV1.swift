@@ -7,22 +7,20 @@
 
 import UIKit
 
-class CustomCardV1: UIView {
-
+class CustomCardV1: UIView, CustomCardView {
+    
     // MARK: - Fields
-    private var action: (() -> Void)?
-    private var cardV1: CardV1!
 
     
     // MARK: - Constants
-    static let baseSize = CGSize(width: 264, height: 234)
+    static var baseSize = CGSize(width: 264, height: 234)
 
     // MARK: - UI Components
     private let backgroundImage = UIImageView()
     
-    private let fireIcon = UIImageView()
-    private let timeIcon = UIImageView()
-    private let arrowIcon = UIImageView()
+    private var fireIcon: UIImageView?
+    private var timeIcon: UIImageView?
+    private var arrowIcon: UIImageView?
     
     private let typeView = UIView()
     private let continueView = UIView()
@@ -33,13 +31,11 @@ class CustomCardV1: UIView {
     private let typeText = UILabel()
     
     private let circle1 = CircleView(color: .black)
+    private let loadingIndicator = UIActivityIndicatorView(style: .large)
 
     // MARK: - Initializers
-    init(position: CGPoint, cardV1: CardV1 = CardV1(), action: (() -> Void)? = nil) {
-        self.action = action
-        self.cardV1 = cardV1
-        let fixedFrame = CGRect(origin: position, size: CGSize(width: UtilsFunc.doResponsive(CustomCardV1.baseSize.width), height: UtilsFunc.doResponsive(CustomCardV1.baseSize.height)))
-        super.init(frame: fixedFrame)
+    init() {
+        super.init(frame: .zero)
         setupView()
     }
 
@@ -52,6 +48,7 @@ class CustomCardV1: UIView {
         self.backgroundColor = .lightGray
 
         // Components Configurations
+        configureBackgroundImage()
         configureContinueView()
         configureLevelType()
         // Icons
@@ -59,25 +56,23 @@ class CustomCardV1: UIView {
         // Texts
         configureHeaderText()
         configureTextLabels()
-        // APISetUp
-//        UtilsFunc.fetchCardData(endPoint: EndPoints.endpointCardV1) {
-//            (result: Result<CardV1, NetworkError>) in
-//            
-//            switch result {
-//            case .success(let cardData):
-//                // Actualizar UI con los datos
-//                DispatchQueue.main.async {
-        self.updateCardView(with: cardV1)
-//                }
-//            case .failure(let error):
-//                print("Error: \(error)")
-//            }
-//        }
+
         // Add SubViews
         addLayouts()
     }
 
     // MARK: - Configuration Methods for Subcomponents
+    
+    private func configureBackgroundImage() {
+        backgroundImage.contentMode = .scaleToFill
+        backgroundImage.clipsToBounds = true
+        backgroundImage.translatesAutoresizingMaskIntoConstraints = false
+        
+        loadingIndicator.color = .orange
+        loadingIndicator.hidesWhenStopped = true
+        loadingIndicator.startAnimating()
+    }
+    
     private func configureContinueView() {
         continueView.backgroundColor = .white
     }
@@ -87,47 +82,49 @@ class CustomCardV1: UIView {
     }
 
     private func configureIcons() {
-        backgroundImage.contentMode = .scaleToFill
-        backgroundImage.translatesAutoresizingMaskIntoConstraints = false
         
-        arrowIcon.contentMode = .scaleAspectFit
-        arrowIcon.tintColor = .black
-        arrowIcon.isUserInteractionEnabled = true
-        arrowIcon.image = UIImage(systemName: "arrow.right")
-
-        
-        timeIcon.contentMode = .scaleAspectFit
-        timeIcon.tintColor = .blue
-        timeIcon.isUserInteractionEnabled = true
-        timeIcon.image = UIImage(systemName: "clock.fill")
-        
-        fireIcon.contentMode = .scaleAspectFit
-        fireIcon.tintColor = .systemOrange
-        fireIcon.isUserInteractionEnabled = true
-        fireIcon.image = UIImage(systemName: "flame.fill")
+        arrowIcon = UIImageView.createIcon(systemName: "arrow.right", tintColor: .black, contentMode: .scaleAspectFit)
+        timeIcon = UIImageView.createIcon(systemName: "clock.fill", tintColor: .blue, contentMode: .scaleAspectFit)
+        fireIcon = UIImageView.createIcon(systemName: "flame.fill", tintColor: .systemOrange, contentMode: .scaleAspectFit)
     }
 
     private func configureHeaderText() {
         headerText.textAlignment = .center
         headerText.textColor = .black
-//        headerText.text = cardV1.header ?? "Total Body Circuit"
     }
 
     private func configureTextLabels() {
         timeText.textAlignment = .center
         timeText.textColor = .black
-//        timeText.text = cardV1.mint ?? "35min"
 
         calTexts.textAlignment = .center
         calTexts.textColor = .black
-//        calTexts.text = cardV1.cal ?? "205Kcal"
 
         typeText.textAlignment = .center
         typeText.textColor = .white
-//        typeText.text = cardV1.type ?? "Upper Body"
     }
     
-    private func updateCardView(with cardData: CardV1) {
+    func fetchData(endPoint: Endpoint, index at: Int = 0)
+    {
+        
+        UtilsFunc.fetchCardData(endPoint: endPoint)
+        {
+            (result: Result<[CardV1], NetworkError>) in
+            switch result {
+            case .success(let cardData):
+                // Actualizar UI con los datos
+                DispatchQueue.main.async {
+                    self.updateCardView(with: cardData[at])
+                }
+            case .failure(let error):
+                print("Error: \(error)")
+            }
+        }
+    }
+    
+    public func updateCardView(with cardData: Codable) {
+        guard let cardData = cardData as? CardV1 else {return}
+        
         // Actualizar textos
         headerText.text = cardData.header ?? "Default Header"
         timeText.text = cardData.mint ?? "0min"
@@ -135,12 +132,16 @@ class CustomCardV1: UIView {
         typeText.text = cardData.type ?? "Type"
 
         // Cargar imagen de fondo
-        if cardData.imageURL != nil{
-            if let imageData = UtilsFunc.loadImage(from: URL(string: cardData.imageURL!)!) {
-                self.backgroundImage.image = UIImage(data: imageData)
+        if let imageUrlString = cardData.imageURL, let url = URL(string: imageUrlString) {
+            
+            UtilsFunc.loadImage(from: url) { image in
+                self.backgroundImage.image = image
+
+                self.loadingIndicator.stopAnimating()
             }
         }
     }
+
     
     // MARK: - Layout
     override func layoutSubviews() {
@@ -149,6 +150,8 @@ class CustomCardV1: UIView {
         // Self SetUp
         self.frame.size = CGSize(width: UtilsFunc.doResponsive(CustomCardV1.baseSize.width), height: UtilsFunc.doResponsive(CustomCardV1.baseSize.height))
         self.layer.cornerRadius = UtilsFunc.doResponsive(20)
+        backgroundImage.frame = self.bounds
+        backgroundImage.layer.cornerRadius = self.layer.cornerRadius
         
         // Frames
         frameSetUp()
@@ -168,21 +171,21 @@ class CustomCardV1: UIView {
     }
     
     private func borderSetUp() {
-        continueView.layer.cornerRadius = UtilsFunc.doResponsive(20)
+        continueView.layer.cornerRadius = UtilsFunc.doResponsive(15)
         typeView.layer.cornerRadius = UtilsFunc.doResponsive(7)
     }
 
     private func frameSetUp() {
-        backgroundImage.frame = UtilsFunc.responsiveCGRect(width: self.frame.width, height: self.frame.height, x: 0, y: 0)
         // Block
         continueView.frame = UtilsFunc.responsiveCGRect(width: 50, height: 49, x: 195, y: 172)
         typeView.frame = UtilsFunc.responsiveCGRect(width: 80, height: 25, x: 16, y: 18)
-        
+        loadingIndicator.center = CGPoint(x: UtilsFunc.doResponsive(self.bounds.midX),
+                                          y: UtilsFunc.doResponsive(self.bounds.midY))
         // Icons
-        arrowIcon.frame = UtilsFunc.responsiveCGRect(width: 24, height: 24, x: 15, y: 15)
-        fireIcon.frame = UtilsFunc.responsiveCGRect(width: 15, height: 15, x: 93, y: 200)
-        fireIcon.frame = UtilsFunc.responsiveCGRect(width: 15, height: 15, x: 95, y: 200)
-        timeIcon.frame = UtilsFunc.responsiveCGRect(width: 15, height: 15, x: 16, y: 200)
+        arrowIcon?.frame = UtilsFunc.responsiveCGRect(width: 24, height: 24, x: 15, y: 15)
+        fireIcon?.frame = UtilsFunc.responsiveCGRect(width: 15, height: 15, x: 93, y: 200)
+        fireIcon?.frame = UtilsFunc.responsiveCGRect(width: 15, height: 15, x: 95, y: 200)
+        timeIcon?.frame = UtilsFunc.responsiveCGRect(width: 15, height: 15, x: 16, y: 200)
         
         circle1.frame = UtilsFunc.responsiveCGRect(width: 5, height: 5, x: 80, y: 205)
 
@@ -197,10 +200,11 @@ class CustomCardV1: UIView {
     private func addLayouts()
     {
         self.addSubview(backgroundImage)
+        self.addSubview(loadingIndicator)
         
         // ContinueView
         self.addSubview(continueView)
-        continueView.addSubview(arrowIcon)
+        continueView.addSubview(arrowIcon!)
         
         // LevelType
         self.addSubview(typeView)
@@ -208,8 +212,8 @@ class CustomCardV1: UIView {
         
         // Icons
 
-        self.addSubview(timeIcon)
-        self.addSubview(fireIcon)
+        self.addSubview(timeIcon!)
+        self.addSubview(fireIcon!)
 
         self.addSubview(circle1)
 

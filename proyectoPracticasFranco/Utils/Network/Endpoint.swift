@@ -40,12 +40,13 @@ struct Endpoint {
     }
     
     var request: URLRequest? {
-        
+        print(baseURL)
+
         var components = URLComponents()
         components.scheme = Constants.Scheme.https
         components.host = baseURL.url
         components.path = path
-
+        print(components.url)
 
         // Resuelve y aplica todos los queryItems
         components.queryItems = queryItems.flatMap { $0.resolve(baseURL: baseURL.url) }
