@@ -9,7 +9,6 @@ import UIKit
 
 class CustomCardV2: UIView, CustomCardView {
 
-
     // MARK: - Fields
     private var processValue: Double?
     

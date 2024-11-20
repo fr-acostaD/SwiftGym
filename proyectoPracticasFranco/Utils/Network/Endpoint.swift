@@ -7,8 +7,6 @@
 
 import Foundation
 
-
-
 //let baseURL = Constants.API.gptBaseURL
 //
 //let endpoint = Endpoint(
@@ -21,7 +19,6 @@ import Foundation
 //                 ],
 //    httpMethod: .get
 //)
-
 
 struct Endpoint {
     let baseURL: BaseURL
@@ -62,22 +59,14 @@ struct Endpoint {
 }
 
 extension URLRequest {
+    
+    // Se pone mutating porque Endpoint es una estructura y esta tipologia a diferencia de las clases se pasan por copia profunda
+    // lo que hace que todo cambio no influya en la original sino que se hace una copia. Por ello ponemos mutating para permitir esa referencia
+    // y asi poder hacer modificaciones.
     mutating func addHeaders(from endpoint: Endpoint) {
         
         for (key, value) in endpoint.baseURL.headers {
             self.setValue(value, forHTTPHeaderField: key)
         }
-
-//        if endpoint.httpMethod == .post || endpoint.httpMethod == .put {
-//            self.setValue("application/json", forHTTPHeaderField: "Content-Type")
-//        }
-//        
-//        if let authToken = endpoint.authToken {
-//            self.setValue("Bearer \(authToken)", forHTTPHeaderField: "Authorization")
-//        }
-//        
-//        if let apiKey = endpoint.apiKey {
-//            self.setValue(apiKey, forHTTPHeaderField: "X-Api-Key")
-//        }
     }
 }
