@@ -40,12 +40,12 @@ class CustomCardV2: UIView, CustomCardView {
     }
 
     required init?(coder: NSCoder) {
-        fatalError("Storyboard is not be able for this View.")
+        fatalError("No se puede hallar el Storyboard.")
     }
 
     // MARK: - Setup Methods
     private func setupView() {
-        self.backgroundColor = .lightGray
+        self.backgroundColor = .blue
 
         // Components Configurations
         configureBackgroundImage()
