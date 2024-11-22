@@ -14,7 +14,7 @@ class SignInPage: UIViewController, UITextFieldDelegate {
     }
     
     private func setupUI() {
-        view.backgroundColor = .white
+        view.backgroundColor = .blue
         emailTextField.delegate = self
 
         addLayouts()

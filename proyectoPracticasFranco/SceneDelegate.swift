@@ -22,46 +22,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.windowScene = windowScene
 
         // Inicializar el controlador de vista principal
-        let mainViewController = tabBarInit()
-
+        let mainViewController = TabBarFactory.createTabBarController()
+        
+        TabBarAppearanceConfig.applyGlobalAppearance()
+        
         // Establecer el controlador de vista raíz
         window?.rootViewController = mainViewController
         // Hacer que la ventana sea visible
         window?.makeKeyAndVisible()
-    }
-
-    private func setUpPageHome() -> UINavigationController {
-        let home = MainViewController()
-        home.tabBarItem = UITabBarItem(tabBarSystemItem: .topRated, tag: 0)
-        return UINavigationController(rootViewController: home)
-    }
-    private func setUpPageExplore() -> UINavigationController {
-        let explore = ExploreWorkout()
-        explore.tabBarItem = UITabBarItem(tabBarSystemItem: .search, tag: 1)
-
-        return UINavigationController(rootViewController: explore)
-    }
-    private func setUpPageSignIn() -> UINavigationController {
-        let explore = SignInPage()
-        explore.tabBarItem = UITabBarItem(tabBarSystemItem: .contacts, tag: 2)
-
-        return UINavigationController(rootViewController: explore)
-    }
-    
-    private func tabBarInit() -> UITabBarController {
-        let explore = setUpPageExplore()
-        let home = setUpPageHome()
-        let signIn = setUpPageSignIn()
-        let tabBar = UITabBarController()
-
-
-        // Se personaliza la apariencia con la clase UITabBar estatica:
-        UITabBar.appearance().barTintColor = .black
-        UITabBar.appearance().tintColor = .systemOrange
-        UITabBar.appearance().unselectedItemTintColor = .red
-        tabBar.viewControllers = [home, signIn, explore]
-
-        return tabBar
     }
     
     func sceneDidDisconnect(_ scene: UIScene) {
