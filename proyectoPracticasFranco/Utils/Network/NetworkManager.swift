@@ -84,7 +84,6 @@ class NetworkManager {
         }
         
         if T.self == Data.self {
-            print(data, "Esto es asi----<")
             completion(.success(data as! T))
             return
         }

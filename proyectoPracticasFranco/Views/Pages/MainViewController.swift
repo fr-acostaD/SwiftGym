@@ -8,13 +8,14 @@ class MainViewController: UIViewController {
     let urlImage: String = "https://thispersondoesnotexist.com/"
     let userName: String = "Franco"
     // MARK: - UI Components
+    // Card
     private var containerViewV0: CustomCardV0!
-
+    // ScrollView
     private var scrollView = UIScrollView()
-     
+    // Header Icons
     private let porfilePicture =  UIImageView()
     private let searchIcon =  UIImageView()
-    
+    // Texts
     private let greetingsText1 =  UILabel()
     private let greetingsText2 =  UILabel()
     private let titleText1 =  UILabel()
@@ -23,10 +24,10 @@ class MainViewController: UIViewController {
     private let titleText4_1 =  UILabel()
     private let titleText4_2 =  UILabel()
     private let titleText4_3 =  UILabel()
-
+    // Carrusels Collections
     private let cardListView1 = CusomCollectionView<CardV1, CustomCardV1>(endpoint:  EndPoints.endpointCardV1)
     private let cardListView2 = CusomCollectionView<CardV2, CustomCardV2>(endpoint:  EndPoints.endpointCardV2, scrollType: .vertical)
-
+    // Buttons
     private let searchButtonView =  UIView()
     
     // MARK: - Initializers
