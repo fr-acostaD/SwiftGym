@@ -57,16 +57,3 @@ struct Endpoint {
         return request
     }
 }
-
-extension URLRequest {
-    
-    // Se pone mutating porque Endpoint es una estructura y esta tipologia a diferencia de las clases se pasan por copia profunda
-    // lo que hace que todo cambio no influya en la original sino que se hace una copia. Por ello ponemos mutating para permitir esa referencia
-    // y asi poder hacer modificaciones.
-    mutating func addHeaders(from endpoint: Endpoint) {
-        
-        for (key, value) in endpoint.baseURL.headers {
-            self.setValue(value, forHTTPHeaderField: key)
-        }
-    }
-}

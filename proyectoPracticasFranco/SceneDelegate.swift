@@ -24,7 +24,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Inicializar el controlador de vista principal
         let mainViewController = TabBarFactory.createTabBarController()
         
-        TabBarAppearanceConfig.applyGlobalAppearance()
+//        TabBarAppearanceConfig.applyGlobalAppearance()
         
         // Establecer el controlador de vista raíz
         window?.rootViewController = mainViewController

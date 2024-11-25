@@ -257,13 +257,4 @@ class CustomCardV0: UIView, CustomCardView {
     // continue
 }
 
-extension UIImageView {
-    static func createIcon(systemName: String, tintColor: UIColor = .gray, contentMode: UIView.ContentMode = .scaleAspectFit) -> UIImageView {
-        let iconView = UIImageView()
-        iconView.image = UIImage(systemName: systemName)
-        iconView.tintColor = tintColor
-        iconView.contentMode = contentMode
-        iconView.isUserInteractionEnabled = true
-        return iconView
-    }
-}
+
