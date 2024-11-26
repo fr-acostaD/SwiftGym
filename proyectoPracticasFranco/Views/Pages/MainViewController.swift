@@ -189,7 +189,6 @@ class MainViewController: UIViewController {
         searchButtonView.layer.borderWidth = UtilsFunc.doResponsive(1)
         searchButtonView.layer.cornerRadius = UtilsFunc.doResponsive(20)
         porfilePicture.layer.cornerRadius = UtilsFunc.doResponsive(porfilePicture.frame.size.width / 2.0)
-
     }
     
     private func updateFonts() {

@@ -217,13 +217,6 @@ class SignInPage: UIViewController, UITextFieldDelegate {
     }
     // MARK: - Add Actions
     
-    
-    
-
-    
-
-
-
 }
 
 
