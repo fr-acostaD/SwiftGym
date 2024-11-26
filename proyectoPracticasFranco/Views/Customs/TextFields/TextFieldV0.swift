@@ -54,6 +54,7 @@ class TextFieldV0: UITextField {
         setupIcon()
 
     }
+    
     // MARK: - Configuration Methods for Subcomponents
     private func setupIcon() {
         

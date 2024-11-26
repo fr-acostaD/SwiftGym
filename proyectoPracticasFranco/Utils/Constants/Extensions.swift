@@ -26,7 +26,6 @@ extension UIColor {
             // Se le pasa una mascara de bits don FF es equivalente a 1111 por lo que se copia el valor
             // Luego se mueve a la primera posicion de unidades.
             // Finalmente se divide en tre 255 para tener valor porcentual.
-            
             r = CGFloat((rgb & 0xFF0000) >> 16) / 255.0
             g = CGFloat((rgb & 0x00FF00) >> 8) / 255.0
             b = CGFloat(rgb & 0x0000FF) / 255.0
@@ -106,8 +105,8 @@ extension SignInPage {
 
 extension UITextField {
     private struct AssociatedKeys {
-        static var beginEditingClosure = "beginEditingClosure"
-        static var endEditingClosure = "endEditingClosure"
+        static var beginEditingClosure = 0
+        static var endEditingClosure = 1
     }
 
     // Swift no permite agregar una propiedad directamente a una clase que no has definido tú.
