@@ -15,3 +15,11 @@ protocol CustomCardView: UIView {
     static var baseSize: CGSize { get set }
     func updateCardView(with cardData: Codable)
 }
+
+protocol FieldValidator {
+    func validate(_ text: String) -> Bool
+    func errorFunc(textField: UITextField, errorLabel: UILabel) -> Void
+
+    var errorMessage: String { get }
+
+}

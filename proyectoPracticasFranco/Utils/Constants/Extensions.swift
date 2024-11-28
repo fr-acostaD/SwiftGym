@@ -88,6 +88,9 @@ extension UIViewController {
 // MARK: SignInPage
 
 extension SignInPage {
+    // Estas funciones que son el delegado de un TextField para
+    // accionarse cuando se entra o sale del TextField
+
     func textFieldDidBeginEditing(_ textField: UITextField) {
         if let complete: () -> Void = textField.accionEditing {
             complete()
@@ -99,6 +102,27 @@ extension SignInPage {
             complete()
         }
     }
+
+}
+
+// MARK: SignUpPage
+
+extension SignUpPage {
+    // Estas funciones que son el delegado de un TextField para
+    // accionarse cuando se entra o sale del TextField
+
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        if let complete: () -> Void = textField.accionEditing {
+            complete()
+        }
+    }
+
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if let complete: () -> Void = textField.accionEndEditing {
+            complete()
+        }
+    }
+
 }
 
 // MARK: UITextField
@@ -137,5 +161,13 @@ extension UITextField {
         set {
             objc_setAssociatedObject(self, &AssociatedKeys.endEditingClosure, newValue, .OBJC_ASSOCIATION_COPY_NONATOMIC)
         }
+    }
+    
+
+    enum TextFieldType {
+        case email
+        case password
+        case plain
+        case phone
     }
 }

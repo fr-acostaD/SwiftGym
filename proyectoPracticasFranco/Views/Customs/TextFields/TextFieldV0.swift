@@ -11,14 +11,19 @@ class TextFieldV0: UITextField {
     
     // MARK: - Fields
     private var padding: UIEdgeInsets?
-    var icon: String?
+    var isValid: Bool?
+    var leftIcon: String?
+    var rightIcon: String?
+
+    private var fieldType: TextFieldType
+    private var validator:FieldValidator?
     
     // MARK: - UI Components
-    private let iconContainerView = UIView()
-    private var iconView: UIImageView?
-
+    private let errorLabel = UILabel()
+    
     // MARK: - Initializers
-    init() {
+    init(fieldType: TextFieldType = .plain) {
+        self.fieldType = fieldType
         super.init(frame: .zero)
         setupView()
         setUpActions()
@@ -33,9 +38,7 @@ class TextFieldV0: UITextField {
         translatesAutoresizingMaskIntoConstraints = false
         isUserInteractionEnabled = true
         
-        layer.borderColor = UIColor(hex: "F97316")?.cgColor
-        
-        layer.shadowColor = UIColor(hex: "F97316")?.cgColor  // Color de la sombra
+
         layer.shadowOpacity = 0.4 // Opacidad de la sombra (ajustar para intensidad)
         layer.shadowOffset = CGSize(width: 0, height: 0)  // Desplazamiento de la sombra (horizontal, vertical)
         
@@ -45,28 +48,16 @@ class TextFieldV0: UITextField {
         textColor = .label
         tintColor = .label
         font = UIFont.preferredFont(forTextStyle: .title2)
-        adjustsFontSizeToFitWidth = true
+        adjustsFontSizeToFitWidth = false
         minimumFontSize = 12
         
         backgroundColor = UIColor(hex: "F3F3F4")
         autocorrectionType = .no
-        placeholder = "Ingresa tu Correo"
-        setupIcon()
-
+        configureForFieldType()
     }
     
     // MARK: - Configuration Methods for Subcomponents
-    private func setupIcon() {
         
-        iconView = UIImageView.createIcon(systemName: icon ?? "envelope", tintColor: .black, contentMode: .center)
-        
-        iconView!.center = iconContainerView.center
-        iconContainerView.addSubview(iconView!)
-
-        leftView = iconContainerView
-        leftViewMode = .always
-    }
-    
     override func textRect(forBounds bounds: CGRect) -> CGRect {
         let defaultPadding = UIEdgeInsets(top: 0, left: 50, bottom: 0, right: 10)
         
@@ -91,17 +82,8 @@ class TextFieldV0: UITextField {
         
         // Self SetUp
         self.frame.size = CGSize(width: UtilsFunc.doResponsive(343), height: UtilsFunc.doResponsive(56))
-        
-        // Frames
-        frameSetUp()
-
         // Borders
         borderSetUp()
-    }
-    
-    private func frameSetUp(){
-        iconContainerView.frame.size = CGSize(width: UtilsFunc.doResponsive(40 + 24), height: UtilsFunc.doResponsive(24))
-        iconView!.frame = UtilsFunc.responsiveCGRect(width: 24, height: 24, x: 17, y: 0)
     }
 
     private func borderSetUp(){
@@ -111,15 +93,73 @@ class TextFieldV0: UITextField {
     // MARK: - Add Actions
     private func setUpActions() {
         accionEditing = {
+            self.layer.borderColor = UIColor(hex: "F97316")?.cgColor
+            self.layer.shadowColor = UIColor(hex: "F97316")?.cgColor  // Color de la sombra
+            
             self.layer.borderWidth = UtilsFunc.doResponsive(2)
             self.layer.shadowRadius = UtilsFunc.doResponsive(10)
         }
+
         accionEndEditing = {
-            self.layer.borderWidth = 0
-            self.layer.shadowRadius = 0
+            self.isValid = self.validate()
         }
     }
     
+    private func validate() -> Bool{
+        guard let text = self.text else { return false }
+        if !(validator?.validate(text) ?? false) {
+                if text.isEmpty {
+                    self.layer.borderWidth = 0
+                    self.layer.shadowRadius = 0
+                    return false }
+                showError()
+                return false
+            }
+        layer.borderColor = UIColor.green.cgColor
+        layer.shadowColor = UIColor.green.cgColor
+        return true
+    }
+    
+    private func configureForFieldType() {
+        switch self.fieldType {
+        case .email:
+            keyboardType = .emailAddress
+            autocapitalizationType = .none
+            placeholder = "Enter your email"
+                        
+            leftView = SideIconCustom(
+                iconView: UIImageView.createIcon(systemName: "envelope", tintColor: .black)
+            )
+            leftViewMode = .always
+            self.validator = EmailValidator()
+            
+        case .password:
+            isSecureTextEntry = true
+            placeholder = "Enter your password"
+            
+            leftView = SideIconCustom(
+                iconView: UIImageView.createIcon(systemName: leftIcon ?? "envelope", tintColor: .black)
+            )
+            leftViewMode = .always
+            
+            rightView = SideIconCustom(
+                iconView: UIImageView.createIcon(systemName: leftIcon ?? "eye", tintColor: .black, contentMode: .center)
+            )
+            rightViewMode = .always
+            
+            self.validator = PasswordValidator()
+            
+        case .phone:
+            keyboardType = .phonePad
+            placeholder = "Enter your phone number"
+            self.validator = LengthValidator(minLength: 10, maxLength: 15)
+            
+        case .plain:
+            keyboardType = .default
+            placeholder = "Enter text"
+        }
+    }
+    func showError() {
+        validator?.errorFunc(textField: self, errorLabel: errorLabel)
+    }
 }
-
-
