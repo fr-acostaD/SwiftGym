@@ -20,14 +20,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         
         window?.windowScene = windowScene
-
-        // Inicializar el controlador de vista principal
-        let mainViewController = TabBarFactory.createTabBarController()
         
 //        TabBarAppearanceConfig.applyGlobalAppearance()
-        
+        let nav = UINavigationController(rootViewController: SignInPage())
+        nav.modalPresentationStyle = .fullScreen
         // Establecer el controlador de vista raíz
-        window?.rootViewController = mainViewController
+        window?.rootViewController = nav
         // Hacer que la ventana sea visible
         window?.makeKeyAndVisible()
     }

@@ -27,11 +27,11 @@ class SignUpPage: UIViewController, UITextFieldDelegate {
     private let confirmPasswordHeader = UILabel()
 
     private let acountHeader = UILabel()
-    private let SignInHeader = UILabel()
+    private let signInHeaderButton = UILabel()
     
     private var iconView: UIImageView?
     private let iconBlocK = UIView()
-    private let buttonSignIn = UIView()
+    private let buttonSignInUp = UIView()
     private let buttonText = UILabel()
     private var buttonIcon: UIImageView?
     
@@ -63,10 +63,10 @@ class SignUpPage: UIViewController, UITextFieldDelegate {
         iconBlocK.backgroundColor = .systemOrange
         iconView = UIImageView.createIcon(systemName: "envelope", tintColor: .white, contentMode: .center)
         
-        buttonSignIn.backgroundColor = .black
+        buttonSignInUp.backgroundColor = .black
         buttonIcon = UIImageView.createIcon(systemName: "arrow.right", tintColor: .white)
         buttonText.textColor = .white
-        buttonText.text = "Sign In"
+        buttonText.text = "Sign Up"
 
     }
 
@@ -101,9 +101,9 @@ class SignUpPage: UIViewController, UITextFieldDelegate {
         acountHeader.textColor = UIColor(hex: "676C75")
         acountHeader.text = "Already have an account?"
         
-        SignInHeader.textAlignment = .center
-        SignInHeader.textColor = UIColor(hex: "F97316")
-        SignInHeader.attributedText = NSAttributedString(
+        signInHeaderButton.textAlignment = .center
+        signInHeaderButton.textColor = UIColor(hex: "F97316")
+        signInHeaderButton.attributedText = NSAttributedString(
             string: "Sign In.",
             attributes: [.underlineStyle: NSUnderlineStyle.single.rawValue]
         )
@@ -129,18 +129,18 @@ class SignUpPage: UIViewController, UITextFieldDelegate {
         passwordHeader.frame = UtilsFunc.responsiveCGRect(width: 68, height: 13, x: 16, y: 388)
         confirmPasswordHeader.frame = UtilsFunc.responsiveCGRect(width: 130, height: 13, x: 16, y: 496)
         acountHeader.frame = UtilsFunc.responsiveCGRect(width: 170, height: 20, x: 80, y: 752)
-        SignInHeader.frame = UtilsFunc.responsiveCGRect(width: 56, height: 20, x: 250, y: 752)
+        signInHeaderButton.frame = UtilsFunc.responsiveCGRect(width: 56, height: 20, x: 250, y: 752)
         iconBlocK.frame = UtilsFunc.responsiveCGRect(width: 48, height: 48, x: 163.5, y: 96)
         iconView!.frame.size = CGSize(width: UtilsFunc.doResponsive(24), height: UtilsFunc.doResponsive(24))
         iconView?.center = CGPoint(x: iconBlocK.bounds.midX, y: iconBlocK.bounds.midY)
-        buttonSignIn.frame = UtilsFunc.responsiveCGRect(width: 343, height: 56, x: 16, y: 664)
+        buttonSignInUp.frame = UtilsFunc.responsiveCGRect(width: 343, height: 56, x: 16, y: 664)
         buttonText.frame = UtilsFunc.responsiveCGRect(width: 60, height: 24, x: 127, y: 16)
         buttonIcon!.frame = UtilsFunc.responsiveCGRect(width: 24, height: 24, x: 192, y: 16)
     }
     
     private func borderSetUp() {
         iconBlocK.layer.cornerRadius = UtilsFunc.doResponsive(20)
-        buttonSignIn.layer.cornerRadius = UtilsFunc.doResponsive(20)
+        buttonSignInUp.layer.cornerRadius = UtilsFunc.doResponsive(20)
     }
     
     private func updateFonts() {
@@ -150,7 +150,7 @@ class SignUpPage: UIViewController, UITextFieldDelegate {
         passwordHeader.font = UIFont.systemFont(ofSize: UtilsFunc.responsiveText(14), weight: .bold)
         confirmPasswordHeader.font = UIFont.systemFont(ofSize: UtilsFunc.responsiveText(14), weight: .bold)
         acountHeader.font = UIFont.systemFont(ofSize: UtilsFunc.responsiveText(14), weight: .medium)
-        SignInHeader.font = UIFont.systemFont(ofSize: UtilsFunc.responsiveText(14), weight: .medium)
+        signInHeaderButton.font = UIFont.systemFont(ofSize: UtilsFunc.responsiveText(14), weight: .medium)
         buttonText.font = UIFont.systemFont(ofSize: UtilsFunc.responsiveText(16), weight: .semibold)
     }
     
@@ -165,18 +165,19 @@ class SignUpPage: UIViewController, UITextFieldDelegate {
         view.addSubview(passwordHeader)
         view.addSubview(confirmPasswordHeader)
         view.addSubview(acountHeader)
-        view.addSubview(SignInHeader)
+        view.addSubview(signInHeaderButton)
         view.addSubview(iconBlocK)
         iconBlocK.addSubview(iconView!)
-        view.addSubview(buttonSignIn)
-        buttonSignIn.addSubview(buttonText)
-        buttonSignIn.addSubview(buttonIcon!)
+        view.addSubview(buttonSignInUp)
+        buttonSignInUp.addSubview(buttonText)
+        buttonSignInUp.addSubview(buttonIcon!)
     }
     
     // MARK: - Add Actions
     
     private func setUpAction() {
         passwordConfirmAction()
+        setUpGestures()
     }
     
     func passwordConfirmAction(){
@@ -200,16 +201,39 @@ class SignUpPage: UIViewController, UITextFieldDelegate {
             elemento.0.showError()
             elemento.1.showError()
         } else {
-            elemento.0.layer.borderColor = UIColor.green.cgColor
-            elemento.0.layer.shadowColor = UIColor.green.cgColor
-            elemento.1.layer.borderColor = UIColor.green.cgColor
-            elemento.1.layer.shadowColor = UIColor.green.cgColor
+            elemento.0.layer.borderColor = UIColor.systemBlue.cgColor
+            elemento.0.layer.shadowColor = UIColor.systemBlue.cgColor
+            elemento.1.layer.borderColor = UIColor.systemBlue.cgColor
+            elemento.1.layer.shadowColor = UIColor.systemBlue.cgColor
             if  elemento.0.layer.borderWidth == 0 {
                 elemento.0.layer.borderWidth = UtilsFunc.doResponsive(2)
                 elemento.0.layer.shadowRadius = UtilsFunc.doResponsive(10)
             }
         }
     }
+    
+    private func setUpGestures() {
+        let tapGestureSignUp = UITapGestureRecognizer(target: self, action: #selector(signUpAction))
+        let tapGestureSignIn = UITapGestureRecognizer(target: self, action: #selector(signInAction))
+        
+        self.buttonSignInUp.addGestureRecognizer(tapGestureSignUp)
+        self.signInHeaderButton.addGestureRecognizer(tapGestureSignIn)
+    }
+    
+    // MARK: - Selectors
+    @objc private func signUpAction() {
+        print("DEBUG  PRINT:", "buttonSignIn")
+        let vc = TabBarFactory.createTabBarController()
+        vc.modalPresentationStyle = .fullScreen
+        self.present(vc, animated: false, completion: nil)
+    }
+    
+    @objc private func signInAction() {
+        print("DEBUG  PRINT:", "signUpHeaderButton")
+
+
+    }
+
 }
 
 

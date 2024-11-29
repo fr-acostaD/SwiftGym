@@ -16,8 +16,8 @@ class SignInPage: UIViewController, UITextFieldDelegate {
     private let emailHeader = UILabel()
     private let passwordHeader = UILabel()
     private let acountHeader = UILabel()
-    private let SignInHeader = UILabel()
-    private let forgotPasswordHeader = UILabel()
+    private let signUpHeaderButton = UILabel()
+    private let forgotPasswordHeaderButton = UILabel()
 
     private var iconView: UIImageView?
     private let iconBlocK = UIView()
@@ -38,6 +38,7 @@ class SignInPage: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        setUpActions()
     }
 
     override func viewDidLayoutSubviews() {
@@ -84,12 +85,6 @@ class SignInPage: UIViewController, UITextFieldDelegate {
     private func textFieldSetUp() {
         emailTextField.delegate = self
         passwordTextField.delegate = self
-//        emailTextField.icon = "envelope"
-//        passwordTextField.icon =  "password"
-        
-//        let iconView = UIImageView.createIcon(systemName: "eye", tintColor: .black)
-//        passwordTextField.rightView = iconView
-//        passwordTextField.rightViewMode = .always
     }
     
     private func textSetUp(){
@@ -113,18 +108,21 @@ class SignInPage: UIViewController, UITextFieldDelegate {
         acountHeader.textColor = UIColor(hex: "676C75")
         acountHeader.text = "Don’t have an account?"
         
-        SignInHeader.textAlignment = .center
-        SignInHeader.textColor = UIColor(hex: "F97316")
-        SignInHeader.attributedText = NSAttributedString(
+        signUpHeaderButton.textAlignment = .center
+        signUpHeaderButton.textColor = UIColor(hex: "F97316")
+        signUpHeaderButton.attributedText = NSAttributedString(
             string: "Sign Up.",
             attributes: [.underlineStyle: NSUnderlineStyle.single.rawValue]
         )
-        forgotPasswordHeader.textAlignment = .center
-        forgotPasswordHeader.textColor = UIColor(hex: "F97316")
-        forgotPasswordHeader.attributedText = NSAttributedString(
+        signUpHeaderButton.isUserInteractionEnabled = true
+        
+        forgotPasswordHeaderButton.textAlignment = .center
+        forgotPasswordHeaderButton.textColor = UIColor(hex: "F97316")
+        forgotPasswordHeaderButton.attributedText = NSAttributedString(
             string: "Forgot Password",
             attributes: [.underlineStyle: NSUnderlineStyle.single.rawValue]
         )
+        forgotPasswordHeaderButton.isUserInteractionEnabled = true
     }
 
     // MARK: - Layout
@@ -145,8 +143,8 @@ class SignInPage: UIViewController, UITextFieldDelegate {
         emailHeader.frame = UtilsFunc.responsiveCGRect(width: 100, height: 13, x: 16, y: 282)
         passwordHeader.frame = UtilsFunc.responsiveCGRect(width: 68, height: 13, x: 16, y: 418)
         acountHeader.frame = UtilsFunc.responsiveCGRect(width: 158, height: 20, x: 80, y: 723)
-        SignInHeader.frame = UtilsFunc.responsiveCGRect(width: 56, height: 20, x: 242, y: 723)
-        forgotPasswordHeader.frame = UtilsFunc.responsiveCGRect(width: 115, height: 16, x: 130, y: 760)
+        signUpHeaderButton.frame = UtilsFunc.responsiveCGRect(width: 56, height: 20, x: 242, y: 723)
+        forgotPasswordHeaderButton.frame = UtilsFunc.responsiveCGRect(width: 115, height: 16, x: 130, y: 760)
         iconBlocK.frame = UtilsFunc.responsiveCGRect(width: 48, height: 48, x: 163.5, y: 96)
         iconView!.frame.size = CGSize(width: UtilsFunc.doResponsive(24), height: UtilsFunc.doResponsive(24))
         iconView?.center = CGPoint(x: iconBlocK.bounds.midX, y: iconBlocK.bounds.midY)
@@ -185,8 +183,8 @@ class SignInPage: UIViewController, UITextFieldDelegate {
         emailHeader.font = UIFont.systemFont(ofSize: UtilsFunc.responsiveText(14), weight: .bold)
         passwordHeader.font = UIFont.systemFont(ofSize: UtilsFunc.responsiveText(14), weight: .bold)
         acountHeader.font = UIFont.systemFont(ofSize: UtilsFunc.responsiveText(14), weight: .medium)
-        SignInHeader.font = UIFont.systemFont(ofSize: UtilsFunc.responsiveText(14), weight: .medium)
-        forgotPasswordHeader.font = UIFont.systemFont(ofSize: UtilsFunc.responsiveText(14), weight: .medium)
+        signUpHeaderButton.font = UIFont.systemFont(ofSize: UtilsFunc.responsiveText(14), weight: .medium)
+        forgotPasswordHeaderButton.font = UIFont.systemFont(ofSize: UtilsFunc.responsiveText(14), weight: .medium)
         buttonText.font = UIFont.systemFont(ofSize: UtilsFunc.responsiveText(16), weight: .semibold)
     }
     
@@ -198,8 +196,8 @@ class SignInPage: UIViewController, UITextFieldDelegate {
         view.addSubview(emailHeader)
         view.addSubview(passwordHeader)
         view.addSubview(acountHeader)
-        view.addSubview(SignInHeader)
-        view.addSubview(forgotPasswordHeader)
+        view.addSubview(signUpHeaderButton)
+        view.addSubview(forgotPasswordHeaderButton)
         view.addSubview(iconBlocK)
         iconBlocK.addSubview(iconView!)
         view.addSubview(buttonSignIn)
@@ -215,10 +213,36 @@ class SignInPage: UIViewController, UITextFieldDelegate {
         view.addSubview(socialMediaSignIn2)
         socialMediaSignIn2.addSubview(iconMedia2!)
     }
-    // MARK: - Add Actions
     
+    // MARK: - Add Actions
+    private func setUpActions() {
+        
+        let tapGestureSignIn = UITapGestureRecognizer(target: self, action: #selector(signInAction))
+        let tapGestureSignUp = UITapGestureRecognizer(target: self, action: #selector(signUpAction))
+        let tapGestureForgotPassword = UITapGestureRecognizer(target: self, action: #selector(forgotPassworAction))
+        
+        self.buttonSignIn.addGestureRecognizer(tapGestureSignIn)
+        self.signUpHeaderButton.addGestureRecognizer(tapGestureSignUp)
+        self.forgotPasswordHeaderButton.addGestureRecognizer(tapGestureForgotPassword)
+    }
+    
+    // MARK: - Selectors
+    
+    @objc private func signInAction() {
+        print("DEBUG  PRINT:", "buttonSignIn")
+        let vc = TabBarFactory.createTabBarController()
+        vc.modalPresentationStyle = .fullScreen
+        self.present(vc, animated: false, completion: nil)
+    }
+    
+    @objc private func signUpAction() {
+        print("DEBUG  PRINT:", "signUpHeaderButton")
+        let vc = SignUpPage()
+        self.navigationController?.pushViewController(vc, animated: true)
+
+    }
+    
+    @objc private func forgotPassworAction() {
+        print("DEBUG  PRINT:", "forgotPasswordHeaderButton")
+    }
 }
-
-
-
-

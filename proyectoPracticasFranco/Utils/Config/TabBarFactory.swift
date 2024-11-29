@@ -14,7 +14,7 @@ struct TabBarFactory {
         let signIn = createPageSignIn()
         let signUp = createPageSignUp()
         let tabBar = UITabBarController()
-        tabBar.viewControllers = [signUp,home, signIn]
+        tabBar.viewControllers = [home]
         return tabBar
     }
 
