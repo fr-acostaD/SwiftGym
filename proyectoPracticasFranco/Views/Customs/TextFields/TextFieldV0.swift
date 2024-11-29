@@ -14,7 +14,7 @@ class TextFieldV0: UITextField {
     var isValid: Bool?
     var leftIcon: String?
     var rightIcon: String?
-
+    private let hasvalidation: Bool
     private var fieldType: TextFieldType
     private var validator:FieldValidator?
     
@@ -22,8 +22,9 @@ class TextFieldV0: UITextField {
     private let errorLabel = UILabel()
     
     // MARK: - Initializers
-    init(fieldType: TextFieldType = .plain) {
+    init(fieldType: TextFieldType = .plain, hasValidation: Bool = true) {
         self.fieldType = fieldType
+        self.hasvalidation = hasValidation
         super.init(frame: .zero)
         setupView()
         setUpActions()
@@ -101,7 +102,9 @@ class TextFieldV0: UITextField {
         }
 
         accionEndEditing = {
-            self.isValid = self.validate()
+            if self.hasvalidation {
+                self.isValid = self.validate()
+            }
         }
     }
     

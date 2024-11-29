@@ -17,8 +17,8 @@ class SignUpPage: UIViewController, UITextFieldDelegate {
     private var headerIcon = UIImage()
     
     private var emailTextField = TextFieldV0(fieldType: .email)
-    private var passwordTextField = TextFieldV0(fieldType: .password)
-    private var confirmPasswordTextField = TextFieldV0(fieldType: .password)
+    private var passwordTextField = TextFieldV0(fieldType: .password, hasValidation: false)
+    private var confirmPasswordTextField = TextFieldV0(fieldType: .password, hasValidation: false)
 
     private let headerText0 = UILabel()
     private let headerText1 = UILabel()
@@ -172,6 +172,7 @@ class SignUpPage: UIViewController, UITextFieldDelegate {
         buttonSignIn.addSubview(buttonText)
         buttonSignIn.addSubview(buttonIcon!)
     }
+    
     // MARK: - Add Actions
     
     private func setUpAction() {
@@ -180,14 +181,34 @@ class SignUpPage: UIViewController, UITextFieldDelegate {
     
     func passwordConfirmAction(){
         confirmPasswordTextField.accionEndEditing = {
-            if self.passwordTextField.text != self.confirmPasswordTextField.text{
-                self.passwordTextField.showError()
-                self.confirmPasswordTextField.showError()
-            } else {
-                self.passwordTextField.layer.borderColor = UIColor.green.cgColor
-                self.passwordTextField.layer.shadowColor = UIColor.green.cgColor
-                self.confirmPasswordTextField.layer.borderColor = UIColor.green.cgColor
-                self.confirmPasswordTextField.layer.shadowColor = UIColor.green.cgColor
+            self.setTexfieldAction(elemento: (self.passwordTextField, self.confirmPasswordTextField))
+        }
+        
+        passwordTextField.accionEndEditing = {
+                self.passwordTextField.layer.borderWidth = 0
+                self.passwordTextField.layer.shadowRadius = 0
+        }
+    }
+    
+    private func setTexfieldAction<T: TextFieldV0, U: TextFieldV0>(elemento: (T, U)) -> Void {
+        if (elemento.0.text?.isEmpty ?? true) && (elemento.1.text?.isEmpty ?? true) {
+            elemento.1.layer.borderWidth = 0
+            elemento.1.layer.shadowRadius = 0
+            return
+        }
+        
+        if (elemento.0.text != elemento.1.text) {
+            elemento.0.showError()
+            elemento.1.showError()
+        } else {
+            elemento.0.layer.borderColor = UIColor.green.cgColor
+            elemento.0.layer.shadowColor = UIColor.green.cgColor
+            elemento.1.layer.borderColor = UIColor.green.cgColor
+            elemento.1.layer.shadowColor = UIColor.green.cgColor
+            if  elemento.0.layer.borderWidth == 0 {
+                elemento.0.layer.borderWidth = UtilsFunc.doResponsive(2)
+                elemento.0.layer.shadowRadius = UtilsFunc.doResponsive(10)
+
             }
         }
     }
