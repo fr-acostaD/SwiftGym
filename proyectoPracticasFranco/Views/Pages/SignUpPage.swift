@@ -185,12 +185,11 @@ class SignUpPage: UIViewController, UITextFieldDelegate {
         }
         
         passwordTextField.accionEndEditing = {
-                self.passwordTextField.layer.borderWidth = 0
-                self.passwordTextField.layer.shadowRadius = 0
+            self.setTexfieldAction(elemento: (self.confirmPasswordTextField, self.passwordTextField))
         }
     }
     
-    private func setTexfieldAction<T: TextFieldV0, U: TextFieldV0>(elemento: (T, U)) -> Void {
+    private func setTexfieldAction(elemento: (TextFieldV0, TextFieldV0)) -> Void {
         if (elemento.0.text?.isEmpty ?? true) && (elemento.1.text?.isEmpty ?? true) {
             elemento.1.layer.borderWidth = 0
             elemento.1.layer.shadowRadius = 0
