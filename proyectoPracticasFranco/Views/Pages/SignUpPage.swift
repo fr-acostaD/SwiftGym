@@ -207,7 +207,6 @@ class SignUpPage: UIViewController, UITextFieldDelegate {
             if  elemento.0.layer.borderWidth == 0 {
                 elemento.0.layer.borderWidth = UtilsFunc.doResponsive(2)
                 elemento.0.layer.shadowRadius = UtilsFunc.doResponsive(10)
-
             }
         }
     }

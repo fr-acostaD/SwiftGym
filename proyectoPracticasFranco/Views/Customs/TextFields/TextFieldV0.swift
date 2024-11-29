@@ -146,7 +146,7 @@ class TextFieldV0: UITextField {
             leftViewMode = .always
             
             rightView = SideIconCustom(
-                iconView: UIImageView.createIcon(systemName: leftIcon ?? "eye", tintColor: .black, contentMode: .center)
+                iconView: UIImageView.createIcon(systemName: rightIcon ?? "eye", tintColor: .black, contentMode: .center)
             )
             rightViewMode = .always
             
