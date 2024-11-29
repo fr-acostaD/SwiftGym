@@ -106,6 +106,8 @@ class TextFieldV0: UITextField {
                 self.isValid = self.validate()
             }
         }
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(togglePasswordVisibility))
+        self.rightView?.addGestureRecognizer(tapGesture)
     }
     
     private func validate() -> Bool{
@@ -164,5 +166,11 @@ class TextFieldV0: UITextField {
     }
     func showError() {
         validator?.errorFunc(textField: self, errorLabel: errorLabel)
+    }
+    
+    @objc private func togglePasswordVisibility() {
+        self.isSecureTextEntry.toggle()
+        (rightView?.subviews.first as! UIImageView).image = self.isSecureTextEntry ? UIImage(systemName: "eye")
+ : UIImage(systemName: "eye.slash")
     }
 }
