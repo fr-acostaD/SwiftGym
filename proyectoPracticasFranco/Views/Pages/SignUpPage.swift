@@ -40,6 +40,7 @@ class SignUpPage: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         setupUI()
         setUpAction()
+        navigationItem.hidesBackButton = true
     }
 
     override func viewDidLayoutSubviews() {
@@ -67,7 +68,6 @@ class SignUpPage: UIViewController, UITextFieldDelegate {
         buttonIcon = UIImageView.createIcon(systemName: "arrow.right", tintColor: .white)
         buttonText.textColor = .white
         buttonText.text = "Sign Up"
-
     }
 
     private func textFieldSetUp() {
@@ -107,6 +107,7 @@ class SignUpPage: UIViewController, UITextFieldDelegate {
             string: "Sign In.",
             attributes: [.underlineStyle: NSUnderlineStyle.single.rawValue]
         )
+        signInHeaderButton.isUserInteractionEnabled = true
     }
 
     // MARK: - Layout
@@ -230,8 +231,7 @@ class SignUpPage: UIViewController, UITextFieldDelegate {
     
     @objc private func signInAction() {
         print("DEBUG  PRINT:", "signUpHeaderButton")
-
-
+        navigationController?.popViewController(animated: true)
     }
 
 }
